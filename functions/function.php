@@ -40,7 +40,7 @@ function createAccount($array){
     $password=passHash($array['password']);
     $contact=$array['contact'];
     include "putRecords.php";
-    $sql="INSERT INTO users(UserID,Email,Username,Password,Contact,Role) VALUES ('".$userid."','".$email."','".$username."','".$password."','".$contact."','".$role."')";
+    $sql="INSERT INTO users(UserID,Email,Username,Password,Contact,Role,Shared) VALUES ('".$userid."','".$email."','".$username."','".$password."','".$contact."','".$role."','1')";
     if(put($sql)){
 
     }
