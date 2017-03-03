@@ -163,3 +163,14 @@ function getProfile(){
     $response=array('photo'=>$path.$row['ProfilePic'].".".$row['Ext'],'first'=>$row['FirstName'],'middle'=>$row['MiddleName'],'last'=>$row['LastName']);
     return $response;
 }
+function upgrade($array){
+    $position=$array['position'];
+    $party=$array['party'];
+    $about=$array['about'];
+    $manifesto=$array['manifesto'];
+    $userid=$_SESSION['userid'];
+    $sql="INSERT INTO aspirants(UserID,About,Party,Position,Manifesto) VALUES ('".$userid."','".$about."','".$party."','".$position."','".$manifesto."')";
+    include "putRecords.php";
+    $result=put($sql);
+    return $result;
+}

@@ -154,14 +154,39 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             <div class="container-fluid">
                 <div class="row">
                     <div class="card">
-                        <div class="card-header">Add Party</div>
+                        <div class="card-header card-profile">Add Info</div>
 
                         <div class="card-content">
                             <form action="../../functions/constructor.php" method="post">
-                                <input type="text" placeholder="Party Name" name="partyname" id="partyname" class="form-control">
-                                <input type="text" placeholder="Abbreviation" name="abbr" id="abbr" class="form-control">
-                                <input type="text" placeholder="Patron Name (First Middle Last)" name="patron" id="patron" class="form-control">
-                                <button name="addparty" class="btn btn-primary">Submit</button>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <select class="form-control" name="party" id="party">
+                                            <option>Select Party</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select class="form-control" name="position" id="position">
+                                            <option>Select Position</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">About</div>
+                                        <div class="card-content">
+                                            <textarea id="aboutme" name="aboutme"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">Manifesto</div>
+                                        <div class="card-content">
+                                            <textarea id="manifesto" name="manifesto"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button name="upgrade" class="btn btn-primary pull-right">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -227,15 +252,21 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
 
+<!-- Add CKEditor-->
+<script src="../../assets/ckeditor/ckeditor.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
+
+        CKEDITOR.replace('manifesto');
+        CKEDITOR.replace('aboutme');
 
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 
         $.ajax({
             url: '../../functions/constructor.php',
-            data: 'gettotalusers',
+            data: 'getparty',
             type: 'POST',
             beforeSend: function () {
             },

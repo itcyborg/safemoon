@@ -53,3 +53,13 @@ if(isset($_POST['getuserprofile'])){
     include 'function.php';
     echo json_encode(getProfile());
 }
+
+if(isset($_POST['upgrade'])){
+    $position=$_POST['position'];
+    $about=htmlentities($_POST['aboutme']);
+    $manifesto=htmlentities($_POST['manifesto']);
+    $party=$_POST['party'];
+    include 'function.php';
+    $array=array('about'=>$about,'position'=>$position,'manifesto'=>$manifesto,'party'=>$party);
+    var_dump(upgrade($array));
+}
