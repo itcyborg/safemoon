@@ -46,6 +46,13 @@ function createAccount($array){
     }
 }
 
+function add_party($array){
+    $partyid="P".generateID();
+    $sql="INSERT INTO parties(PartyID,PartyName,PartyABR,Patron) VALUES ('".$partyid."','".$array['name']."','".$array['abbr']."','".$array['patron']."')";
+    include 'putRecords.php';
+    $result=put($sql);
+    var_dump($result);
+}
 
 function generateID(){
     $idKkeyspace='ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';

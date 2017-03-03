@@ -30,3 +30,12 @@ if(isset($_POST['gettotalusers'])){
     include 'function.php';
     echo getTotalUsers();
 }
+
+if(isset($_POST['addparty'])){
+    include  'function.php';
+    $name=$_POST['partyname'];
+    $abbr=$_POST['abbr'];
+    $patron=$_POST['patron'];
+    $array=array('name'=>$name,'patron'=>$patron,'abbr'=>$abbr);
+    add_party($array);
+}
