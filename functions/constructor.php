@@ -39,3 +39,17 @@ if(isset($_POST['addparty'])){
     $array=array('name'=>$name,'patron'=>$patron,'abbr'=>$abbr);
     add_party($array);
 }
+
+if(isset($_POST['updateprofile'])){
+    $photo=$_FILES['pic'];
+    $firstname=$_POST['firstname'];
+    $middlename=$_POST['middlename'];
+    $lastname=$_POST['lastname'];
+    $array=array('profile'=>$photo,'first'=>$firstname,'middle'=>$middlename,'last'=>$lastname);
+    include 'function.php';
+    updateProfile($array);
+}
+if(isset($_POST['getuserprofile'])){
+    include 'function.php';
+    echo json_encode(getProfile());
+}

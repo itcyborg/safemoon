@@ -4,12 +4,14 @@
      */
 
     function put($sql){
-        $sql=mysqli_real_escape_string($sql);
         $conn=getconn();
+
+        $sql=mysqli_real_escape_string($conn,$sql);
+        $sql=stripslashes($sql);
         if($conn->query($sql)===TRUE){
             return array('status'=>true,'id'=>$conn->insert_id);
         }else{
-            return array('status'=>false);
+            return array('status'=>false,'error'=>$conn->error);
         }
     }
 
