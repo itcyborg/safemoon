@@ -163,6 +163,7 @@ function getProfile(){
     $response=array('photo'=>$path.$row['ProfilePic'].".".$row['Ext'],'first'=>$row['FirstName'],'middle'=>$row['MiddleName'],'last'=>$row['LastName']);
     return $response;
 }
+
 function upgrade($array){
     $position=$array['position'];
     $party=$array['party'];
@@ -172,5 +173,12 @@ function upgrade($array){
     $sql="INSERT INTO aspirants(UserID,About,Party,Position,Manifesto) VALUES ('".$userid."','".$about."','".$party."','".$position."','".$manifesto."')";
     include "putRecords.php";
     $result=put($sql);
+    return $result;
+}
+
+function viewAspirant($id){
+    $sql  = 'SELECT aspirants.*,profile.*,users.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID JOIN users ON users.UserID=aspirants.UserID WHERE users.UserID="'.$id.'"';
+    include "getRecords.php";
+    $result=getRecord($sql);
     return $result;
 }
