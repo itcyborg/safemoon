@@ -29,7 +29,7 @@
 
 	<div class="wrapper">
 
-	    <div class="sidebar" data-color="purple" data-image="../../assets/img/sidebar-1.jpg">
+	    <div class="sidebar" data-color="orange" style="background-color:#ff5494;" data-image="../../assets/img/sidebar-1.jpg">
 			<!--
 		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 

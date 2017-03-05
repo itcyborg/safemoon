@@ -32,6 +32,8 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
           type='text/css'>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -154,66 +156,21 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             <div class="container-fluid">
                 <div class="row">
                     <div class="card">
-                        <div class="card-header card-profile">Add Info</div>
-                        <div class="card-description" id="status"></div>
+                        <div class="card-header">View Aspirants</div>
                         <div class="card-content">
-                            <form action="../../functions/constructor.php" method="post">
-                                <div class="col-md-12">
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="party" id="party">
-                                            <option>Select Party</option>
-                                            <div id="party"></div>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="position" id="position">
-                                            <option>Select Position</option>
-                                            <option value="president">President</option>
-                                            <option value="senator">Senator</option>
-                                            <option value="governor">Governor</option>
-                                            <option value="wrep">Women Representative</option>
-                                            <option value="mp">Member of Parliament</option>
-                                            <option value="ward">Ward Representative</option>2
-                                        </select>
-                                    </div>
-                                </div>
-                                <div id="countyinfo" class="col-md-12">
-                                    <div class="col-md-4 col-lg-4 col-sm-12">
-                                        <select class="form-control" name="county" id="county">
-                                            <option>Select County</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-4 col-lg-4 col-sm-12">
-                                        <select class="form-control" name="constituency" id="constituency">
-                                            <option>Select Constituency</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-4 col-lg-4 col-sm-12">
-                                        <select class="form-control" name="ward" id="ward">
-                                            <option>Select Ward</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12 col-lg-6">
-                                    <div class="card">
-                                        <div class="card-header">About</div>
-                                        <div class="card-content">
-                                            <textarea id="aboutme" name="aboutme"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12 col-lg-6">
-                                    <div class="card">
-                                        <div class="card-header">Manifesto</div>
-                                        <div class="card-content">
-                                            <textarea id="manifesto" name="manifesto"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button name="upgrade" class="btn btn-primary pull-right">Submit</button>
-                            </form>
+                            <table class="table table-bordered table-full-width">
+                                <thead>
+                                <tr>
+                                    <th>UserID</th>
+                                    <th>Party</th>
+                                    <th>Position</th>
+                                    <th>About</th>
+                                    <th>Manifesto</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -278,98 +235,28 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
 
-<!-- Add CKEditor-->
-<script src="../../assets/ckeditor/ckeditor.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
-
-        CKEDITOR.replace('manifesto');
-        CKEDITOR.replace('aboutme');
 
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 
         $.ajax({
             url: '../../functions/constructor.php',
-            data: 'getparty',
+            data: {
+                'getaspirants':1,
+                'category':'all'
+            },
             type: 'POST',
-            dataType: 'JSON',
             beforeSend: function () {
-                $('#status').html("Loading");
             },
             success: function (data) {
-                $('#status').html("");
-                var output=JSON.stringify(data.output).replace("[","").replace("]","").replace(/"/g,"");
-                var d=output.split(",");
-                var len=d.length;
-                for(var i=0;i<len;i++){
-                    $('#party').append("<option>"+d[i]+"</option>")
-                }
+                $('#tbody').html(data);
             }
         });
 
-        $('#position').change(function(){
-            var position=$('#position').val();
-            if(position=="governor" || position=="senator" || position=="wrep" || position=="mca" || position=="mp" || position=="ward"){
-                $.ajax({
-                    url:    '../../functions/constructor.php',
-                    data:   'getCounties',
-                    type:   'POST',
-                    beforeSend:function(){
-                        $('#status').html("Fetching counties");
-                    },
-                    success:function(data){
-                        $('#status').html("done");
-                        $('#county').show();
-                        $('#county').append(data);
-                    }
-                });
-            }else if(position=="president"){
-                $('#county').html("<option>Select County</option>").hide();
-            }
-        });
-
-        $('#county').change(function(){
-            var position=$('#position').val();
-            var county=$('#county').val();
-            if(position=="mp"){
-                $.ajax({
-                    url:    '../../functions/constructor.php',
-                    data:   {
-                        'getconstituencies':1,
-                        'id': county
-                    },
-                    type:   'POST',
-                    beforeSend:function(){
-                        $('#status').html("Fetching consituencies");
-                    },
-                    success:function(data){
-                        $('#status').html("done");
-                        $('#constituency').html("<option>Select Constituency</option>"+data);
-                    }
-                });
-            }
-        });
-        $('#constituency').change(function(){
-           var consituency=$('#constituency').val();
-           $.ajax({
-               url:    '../../functions/constructor.php',
-               data:   {
-                   'getwards':1,
-                   'id': consituency
-               },
-               type:   'POST',
-               beforeSend:function(){
-                   $('#status').html("Fetching wards");
-               },
-               success:function(data){
-                   $('#status').html("done");
-                   $('#ward').html("<option>Select Ward</option>"+data);
-               }
-           });
-        });
     });
 </script>
 
 </html>
+l

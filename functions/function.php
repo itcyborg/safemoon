@@ -8,7 +8,7 @@
  */
 /**
  * TODO create 4 accounts: @admin,@user
- * @admin   - create/delete pages for aspirants
+ * @admin   - create/delete pages for aspirants.php
  *          - view/approve transactions
  *
  * @user    - view aspirant's profile
@@ -177,7 +177,59 @@ function upgrade($array){
 }
 
 function viewAspirant($id){
-    $sql  = 'SELECT aspirants.*,profile.*,users.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID JOIN users ON users.UserID=aspirants.UserID WHERE users.UserID="'.$id.'"';
+    $sql  = 'SELECT aspirants.php.*,profile.*,aspirants.php.* FROM aspirants.php JOIN profile ON aspirants.php.UserID=profile.UserID JOIN aspirants.php ON aspirants.php.UserID=aspirants.php.UserID WHERE aspirants.php.UserID="'.$id.'"';
+    include "getRecords.php";
+    $result=getRecord($sql);
+    return $result;
+}
+
+function getParties(){
+    $sql="SELECT PartyName FROM parties";
+    include 'getRecords.php';
+    $result=getRecord($sql);
+    $output= array();
+    while($rows=$result->fetch_assoc()){
+        $output=array_merge_recursive($output,array('output'=>$rows['PartyName']));
+    }
+    return json_encode($output);
+}
+
+function getCounties(){
+    $sql="SELECT * FROM counties";
+    include 'getRecords.php';
+    $result=getRecord($sql);
+    $output= "";
+    while($rows=$result->fetch_assoc()){
+        $output.="<option value='".$rows['id']."'>".$rows['county_name']."</option>";
+    }
+    return $output;
+}
+function getConstituencies($id){
+    $sql="SELECT DISTINCT name FROM subcounties WHERE county_id='".$id."'";
+    include 'getRecords.php';
+    $result=getRecord($sql);
+    $output= "";
+    while($rows=$result->fetch_assoc()){
+        $output.="<option value='".$rows['name']."'>".$rows['name']."</option>";
+    }
+    return $output;
+}
+function getWards($id){
+    $sql="SELECT * FROM subcounties WHERE name='".$id."'";
+    include 'getRecords.php';
+    $result=getRecord($sql);
+    $output= "";
+    while($rows=$result->fetch_assoc()){
+        $output.="<option value='".$rows['ward']."'>".$rows['ward']."</option>";
+    }
+    return $output;
+}
+
+function getAspirants($id){
+    if($id!=""){
+        $sql="SELECT * FROM aspirants WHERE Status='".$id."'";
+    }
+    $sql="SELECT * FROM aspirants";
     include "getRecords.php";
     $result=getRecord($sql);
     return $result;

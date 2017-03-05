@@ -12,13 +12,14 @@
                 $last=$row['LastName'];
                 $email=$row['Email'];
                 $position=$row['Position'];
-                $about=$row['About'];
-                $manifesto=$row['Manifesto'];
+                $about=html_entity_decode($row['About']);
+                $manifesto=html_entity_decode($row['Manifesto']);
+                $manifesto=htmlspecialchars_decode($manifesto);
                 $profilepic=$row['ProfilePic'].".".$row['Ext'];
                 $shared=$row['Shared'];
                 $contact=$row['Contact'];
                 $party=$row['Party'];
-                $fullname=$first." ".$middle." ".$last;
+                $fullname=strtoupper($first." ".$middle." ".$last);
                 $img="../uploads/profiles/".$profilepic;
             }
         }
@@ -43,72 +44,37 @@
 
 		<!-- Header -->
 			<header id="header">
+                <img class="image" src="<?php echo $img; ?>">
 				<div class="inner">
-					<a href="#" class="image avatar"><img src="<?php echo $img;?>" alt="" /></a>
 					<h1><strong><?php echo $fullname; ?></strong></h1>
 				</div>
 			</header>
 
 		<!-- Main -->
-			<div id="main" background="<?php echo $img; ?>">
+			<div id="main">
 
 				<!-- One -->
 					<section id="one">
 						<header class="major">
-                            <?php echo $img; ?>
-							<h2>Ipsum lorem dolor aliquam ante commodo<br />
-							magna sed accumsan arcu neque.</h2>
+							<h2>About Me</h2>
 						</header>
-						<p>Accumsan orci faucibus id eu lorem semper. Eu ac iaculis ac nunc nisi lorem vulputate lorem neque cubilia ac in adipiscing in curae lobortis tortor primis integer massa adipiscing id nisi accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque cubilia.</p>
-						<ul class="actions">
-							<li><a href="#" class="button">Learn More</a></li>
-						</ul>
+						<p><?php echo $about; ?></p>
 					</section>
 
 				<!-- Two -->
 					<section id="two">
-						<h2>Recent Work</h2>
+						<h1>Manifesto</h1>
 						<div class="row">
 							<article class="6u 12u$(xsmall) work-item">
-								<a href="images/fulls/01.jpg" class="image fit thumb"><img src="images/thumbs/01.jpg" alt="" /></a>
-								<h3>Magna sed consequat tempus</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u$ 12u$(xsmall) work-item">
-								<a href="images/fulls/02.jpg" class="image fit thumb"><img src="images/thumbs/02.jpg" alt="" /></a>
-								<h3>Ultricies lacinia interdum</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u 12u$(xsmall) work-item">
-								<a href="images/fulls/03.jpg" class="image fit thumb"><img src="images/thumbs/03.jpg" alt="" /></a>
-								<h3>Tortor metus commodo</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u$ 12u$(xsmall) work-item">
-								<a href="images/fulls/04.jpg" class="image fit thumb"><img src="images/thumbs/04.jpg" alt="" /></a>
-								<h3>Quam neque phasellus</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u 12u$(xsmall) work-item">
-								<a href="images/fulls/05.jpg" class="image fit thumb"><img src="images/thumbs/05.jpg" alt="" /></a>
-								<h3>Nunc enim commodo aliquet</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="6u$ 12u$(xsmall) work-item">
-								<a href="images/fulls/06.jpg" class="image fit thumb"><img src="images/thumbs/06.jpg" alt="" /></a>
-								<h3>Risus ornare lacinia</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
+                                <?php echo $manifesto; ?>
 							</article>
 						</div>
-						<ul class="actions">
-							<li><a href="#" class="button">Full Portfolio</a></li>
-						</ul>
 					</section>
 
 				<!-- Three -->
 					<section id="three">
 						<h2>Get In Touch</h2>
-						<p>Accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque lorem ipsum dolor.</p>
+						<p>Get in touch with the aspirant directly or via private message. Please note that the personal information may be made private by the aspirant.</p>
 						<div class="row">
 							<div class="8u 12u$(small)">
 								<form method="post" action="#">
@@ -125,18 +91,12 @@
 							<div class="4u$ 12u$(small)">
 								<ul class="labeled-icons">
 									<li>
-										<h3 class="icon fa-home"><span class="label">Address</span></h3>
-										1234 Somewhere Rd.<br />
-										Nashville, TN 00000<br />
-										United States
-									</li>
-									<li>
 										<h3 class="icon fa-mobile"><span class="label">Phone</span></h3>
-										000-000-0000
+										+254<?php echo $contact; ?>
 									</li>
 									<li>
 										<h3 class="icon fa-envelope-o"><span class="label">Email</span></h3>
-										<a href="#">hello@untitled.tld</a>
+										<a href="#"><?php echo $email; ?></a>
 									</li>
 								</ul>
 							</div>
