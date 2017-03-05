@@ -1,5 +1,5 @@
 <?php
-@session_start();
+session_start();
 /**
  * Created by PhpStorm.
  * User: PAVILION 15
@@ -83,7 +83,17 @@ function login($array)
         $hash = $rows['Password'];
         if (passVerify($password, $hash)) {
             $_SESSION['userid']=$rows['UserID'];
-            header("location:../users/adm/dashboard.php");
+            $role=$rows['Role'];
+            $_SESSION['role']=$role;
+            if($role==1){
+                header("location:../users/adm/dashboard.php");
+            }elseif ($role==2){
+                header("location:../users/aspirant/dashboard.php");
+            }elseif ($role==3){
+                header("location:../users/public/dashboard.php");
+            }else{
+                header("location:../views/error.php?error=true&code=A1&message=unexpected servererror.Contact admin.");
+            }
             getTotalUsers();
         } else {
             echo "failed";

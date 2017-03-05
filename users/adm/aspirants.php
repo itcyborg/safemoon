@@ -1,4 +1,8 @@
 <?php
+    @session_start();
+    if($_SESSION['role']!=1){
+        header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
+    }
 /**
  * Created by PhpStorm.
  * User: itcyb
@@ -158,8 +162,8 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                     <div class="card">
                         <div class="card-header">View Aspirants</div>
                         <div class="card-content">
-                            <table class="table table-bordered table-full-width">
-                                <thead>
+                            <table class="table table-hover table-responsive table-full-width">
+                                <thead class="text-primary">
                                 <tr>
                                     <th>UserID</th>
                                     <th>Party</th>

@@ -101,11 +101,11 @@ if(isset($_POST['getaspirants'])){
     $output="";
     while($row=$result->fetch_assoc()){
         if($row['Status']==1){
-            $status="<div class='btn btn-success disabled'>Enabled</div>";
+            $status="<div class='btn btn-success btn-sm disabled'>Enabled</div>";
         }elseif ($row['Status']==3){
-            $status="<div class='btn btn-danger disabled'>Deactivated</div>";
+            $status="<div class='btn btn-danger disabled btn-sm'>Deactivated</div>";
         }elseif ($row['Status']==0){
-            $status="<div class='btn btn-warning disabled'>Pending</div>";
+            $status="<div class='btn btn-warning disabled btn-sm'>Pending</div>";
         }
         $output.="<tr>
                     <td>".$row['UserID']."</td>
