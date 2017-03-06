@@ -1,16 +1,22 @@
 
 TITLE: 
-Union - Multi-Purpose One Page Responsive Free HTML5 template
+Safemoon.com
 
 AUTHOR:
-DESIGNED & DEVELOPED by FREEHTML5.co
+itcyborg designs
+Website: http://itcyborg.webuda.com
+
+CREDITS
+---------------------------
+
+TEMPLATE: DESIGNED & DEVELOPED by FREEHTML5.co
 
 Website: http://freehtml5.co/
 Twitter: http://twitter.com/fh5co
 Facebook: http://facebook.com/fh5co
 
 
-CREDITS:
+FURTHER CREDITS:
 
 Bootstrap
 http://getbootstrap.com/
