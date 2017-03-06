@@ -1,4 +1,8 @@
 <?php
+@session_start();
+if($_SESSION['role']!=1){
+    header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
+}
 /**
  * Created by PhpStorm.
  * User: itcyb
@@ -54,51 +58,33 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="dashboard.php">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="user.html">
+                    <a href="profile.php">
                         <i class="material-icons">person</i>
                         <p>User Profile</p>
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
-                        <i class="material-icons">content_paste</i>
-                        <p>Table List</p>
+                    <a href="aspirants.php">
+                        <i class="material-icons">people</i>
+                        <p>Aspirants</p>
                     </a>
                 </li>
                 <li>
-                    <a href="typography.html">
-                        <i class="material-icons">library_books</i>
-                        <p>Typography</p>
+                    <a href="parties.php">
+                        <i class="material-icons">group add</i>
+                        <p> &nbsp;&nbsp;Parties</p>
                     </a>
                 </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="material-icons">bubble_chart</i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.html">
-                        <i class="material-icons">location_on</i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
+                <li class="disabled">
                     <a href="notifications.html">
                         <i class="material-icons text-gray">notifications</i>
                         <p>Notifications</p>
-                    </a>
-                </li>
-                <li class="active-pro">
-                    <a href="upgrade.html">
-                        <i class="material-icons">unarchive</i>
-                        <p>Upgrade to PRO</p>
                     </a>
                 </li>
             </ul>

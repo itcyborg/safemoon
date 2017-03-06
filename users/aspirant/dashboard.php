@@ -1,3 +1,15 @@
+<?php
+@session_start();
+if($_SESSION['role']!=2){
+    header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
+}
+/**
+ * Created by PhpStorm.
+ * User: itcyb
+ * Date: 3/3/2017
+ * Time: 9:12 AM
+ */
+?>
 <!doctype html>
 <html lang="en">
 <head>

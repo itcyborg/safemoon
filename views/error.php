@@ -72,12 +72,12 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row col-md-6 col-lg-7 col-sm-12">
-                    <div class="card">
+                    <div class="card text-center">
                         <div class="card-header card-profile">Error</div>
 
-                        <div class="card-content text-capitalize text-center">
-                            <h1><?php echo $code;?></h1>
-                            <p><?php echo $message;?></p>
+                        <div class="card-content text-capitalize">
+                            <h1 class="text-danger"><?php echo $code;?></h1>
+                            <p class="text-danger"><?php echo $message;?></p>
                         </div>
                     </div>
                 </div>
