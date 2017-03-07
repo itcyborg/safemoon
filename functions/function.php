@@ -43,7 +43,64 @@ function createAccount($array)
     include "putRecords.php";
     $sql = "INSERT INTO users(UserID,Email,Username,Password,Contact,Role,Shared) VALUES ('" . $userid . "','" . $email . "','" . $username . "','" . $password . "','" . $contact . "','" . $role . "','1')";
     if (put($sql)) {
+        include "../libs/PHPMailer/PHPMailerAutoload.php";
 
+
+        //Create a new PHPMailer instance
+
+        $mail = new PHPMailer;
+
+        // Set PHPMailer to use the sendmail transport
+        $mail->isSendmail();
+
+        //Set who the message is to be sent from
+
+        $mail->setFrom('admin@safemoon.com', 'Admin');
+
+        //Set an alternative reply-to address
+
+        $mail->addReplyTo('admin@safemoon.com', 'Admin');
+
+        //Set who the message is to be sent to
+
+        $mail->addAddress($email, $username);
+
+        //Set the subject line
+
+        $mail->Subject = 'Welcome';
+
+        //Read an HTML message body from an external file, convert referenced images to embedded,
+
+        //convert HTML into a basic plain-text alternative body
+        $file=fopen("../uploads/welcome/welcome.txt",'r');
+        $txt=fread($file,filesize("../uploads/welcome/welcome.txt"));
+
+        //add the params to the msg
+        $msg=strtr ($txt, array ('[logo]'=>'<img src="../uploads/logo.jpg">','[sitename]' => 'Safemoon.com','[username]'=>$username,'[email]'=>$email,'[contact]'=>$contact,'[admin]'=>'Admin','[aemail]'=>'admin@safemoon.com'));
+
+        //$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+        $mail->msgHTML($msg);
+        //Replace the plain text body with one created manually
+
+        $mail->AltBody =html_entity_decode(strip_tags($msg)) ;
+
+        //Attach an image file
+        echo $msg;
+
+        //$mail->addAttachment('images/phpmailer_mini.png');
+
+
+        //send the message, check for errors
+
+        if (!$mail->send()) {
+
+            echo "Mailer Error: " . $mail->ErrorInfo;
+
+        } else {
+
+            echo "Message sent!";
+
+        }
     }
 }
 
@@ -82,16 +139,16 @@ function login($array)
         $rows = $result->fetch_assoc();
         $hash = $rows['Password'];
         if (passVerify($password, $hash)) {
-            $_SESSION['userid']=$rows['UserID'];
-            $role=$rows['Role'];
-            $_SESSION['role']=$role;
-            if($role==1){
+            $_SESSION['userid'] = $rows['UserID'];
+            $role = $rows['Role'];
+            $_SESSION['role'] = $role;
+            if ($role == 1) {
                 header("location:../users/adm/dashboard.php");
-            }elseif ($role==2){
+            } elseif ($role == 2) {
                 header("location:../users/aspirant/dashboard.php");
-            }elseif ($role==3){
+            } elseif ($role == 3) {
                 header("location:../users/public/dashboard.php");
-            }else{
+            } else {
                 header("location:../views/error.php?error=true&code=A1&message=unexpected servererror.Contact admin.");
             }
             getTotalUsers();
@@ -104,28 +161,28 @@ function login($array)
 function updateProfile($array)
 {
     $path = $array['profile']['name'];
-    $file=$array['profile']["tmp_name"];
+    $file = $array['profile']["tmp_name"];
     $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-    $target_dir="../uploads/profiles/";
-    $filename="F".$_SESSION['userid'];
-    $userid=$_SESSION['userid'];
-    $target_file=$target_dir.$filename.".".$ext;
-    $sql = "INSERT INTO profile (FirstName, MiddleName, LastName, UserID, ProfilePic,Ext) VALUES ('".$array['first']."','".$array['middle']."','".$array['last']."','".$userid."','".$filename."','".$ext."')";
+    $target_dir = "../uploads/profiles/";
+    $filename = "F" . $_SESSION['userid'];
+    $userid = $_SESSION['userid'];
+    $target_file = $target_dir . $filename . "." . $ext;
+    $sql = "INSERT INTO profile (FirstName, MiddleName, LastName, UserID, ProfilePic,Ext) VALUES ('" . $array['first'] . "','" . $array['middle'] . "','" . $array['last'] . "','" . $userid . "','" . $filename . "','" . $ext . "')";
     include 'putRecords.php';
-    $results=put($sql);
+    $results = put($sql);
     var_dump($results);
-    if(move_uploaded_file($file,$target_file)){
-        if(file_exists($target_file)){
-            $msg="The file has been uploaded";
-            $success=true;
-        }else{
-            $msg="The file has not been uploaded";
-            $success=false;
+    if (move_uploaded_file($file, $target_file)) {
+        if (file_exists($target_file)) {
+            $msg = "The file has been uploaded";
+            $success = true;
+        } else {
+            $msg = "The file has not been uploaded";
+            $success = false;
         }
-    }else{
-        $success=false;
-        $msg="the file has not been uploaded";
+    } else {
+        $success = false;
+        $msg = "the file has not been uploaded";
     }
     echo $msg;
 }
@@ -163,90 +220,101 @@ function getTotalUsers()
     return $result->num_rows;
 }
 
-function getProfile(){
-    $userid=$_SESSION['userid'];
-    $sql="SELECT * FROM profile WHERE UserID='".$userid."'";
+function getProfile()
+{
+    $userid = $_SESSION['userid'];
+    $sql = "SELECT * FROM profile WHERE UserID='" . $userid . "'";
     include 'getRecords.php';
-    $result=getRecord($sql);
-    $path="../../uploads/profiles/";
-    $row=$result->fetch_assoc();
-    $response=array('photo'=>$path.$row['ProfilePic'].".".$row['Ext'],'first'=>$row['FirstName'],'middle'=>$row['MiddleName'],'last'=>$row['LastName']);
+    $result = getRecord($sql);
+    $path = "../../uploads/profiles/";
+    $row = $result->fetch_assoc();
+    $response = array('photo' => $path . $row['ProfilePic'] . "." . $row['Ext'], 'first' => $row['FirstName'], 'middle' => $row['MiddleName'], 'last' => $row['LastName']);
     return $response;
 }
 
-function upgrade($array){
-    $position=$array['position'];
-    $party=$array['party'];
-    $about=$array['about'];
-    $manifesto=$array['manifesto'];
-    $userid=$_SESSION['userid'];
-    $sql="INSERT INTO aspirants(UserID,About,Party,Position,Manifesto) VALUES ('".$userid."','".$about."','".$party."','".$position."','".$manifesto."')";
+function upgrade($array)
+{
+    $position = $array['position'];
+    $party = $array['party'];
+    $about = $array['about'];
+    $manifesto = $array['manifesto'];
+    $userid = $_SESSION['userid'];
+    $sql = "INSERT INTO aspirants(UserID,About,Party,Position,Manifesto) VALUES ('" . $userid . "','" . $about . "','" . $party . "','" . $position . "','" . $manifesto . "')";
     include "putRecords.php";
-    $result=put($sql);
+    $result = put($sql);
     return $result;
 }
 
-function viewAspirant($id){
-    $sql  = 'SELECT aspirants.php.*,profile.*,aspirants.php.* FROM aspirants.php JOIN profile ON aspirants.php.UserID=profile.UserID JOIN aspirants.php ON aspirants.php.UserID=aspirants.php.UserID WHERE aspirants.php.UserID="'.$id.'"';
+function viewAspirant($id)
+{
+    $sql = 'SELECT aspirants.php.*,profile.*,aspirants.php.* FROM aspirants.php JOIN profile ON aspirants.php.UserID=profile.UserID JOIN aspirants.php ON aspirants.php.UserID=aspirants.php.UserID WHERE aspirants.php.UserID="' . $id . '"';
     include "getRecords.php";
-    $result=getRecord($sql);
+    $result = getRecord($sql);
     return $result;
 }
 
-function getParties(){
-    $sql="SELECT PartyName FROM parties";
+function getParties()
+{
+    $sql = "SELECT PartyName FROM parties";
     include 'getRecords.php';
-    $result=getRecord($sql);
-    $output= array();
-    while($rows=$result->fetch_assoc()){
-        $output=array_merge_recursive($output,array('output'=>$rows['PartyName']));
+    $result = getRecord($sql);
+    $output = array();
+    while ($rows = $result->fetch_assoc()) {
+        $output = array_merge_recursive($output, array('output' => $rows['PartyName']));
     }
     return json_encode($output);
 }
 
-function getCounties(){
-    $sql="SELECT * FROM counties";
+function getCounties()
+{
+    $sql = "SELECT * FROM counties";
     include 'getRecords.php';
-    $result=getRecord($sql);
-    $output= "";
-    while($rows=$result->fetch_assoc()){
-        $output.="<option value='".$rows['id']."'>".$rows['county_name']."</option>";
-    }
-    return $output;
-}
-function getConstituencies($id){
-    $sql="SELECT DISTINCT name FROM subcounties WHERE county_id='".$id."'";
-    include 'getRecords.php';
-    $result=getRecord($sql);
-    $output= "";
-    while($rows=$result->fetch_assoc()){
-        $output.="<option value='".$rows['name']."'>".$rows['name']."</option>";
-    }
-    return $output;
-}
-function getWards($id){
-    $sql="SELECT * FROM subcounties WHERE name='".$id."'";
-    include 'getRecords.php';
-    $result=getRecord($sql);
-    $output= "";
-    while($rows=$result->fetch_assoc()){
-        $output.="<option value='".$rows['ward']."'>".$rows['ward']."</option>";
+    $result = getRecord($sql);
+    $output = "";
+    while ($rows = $result->fetch_assoc()) {
+        $output .= "<option value='" . $rows['id'] . "'>" . $rows['county_name'] . "</option>";
     }
     return $output;
 }
 
-function getAspirants($id){
-    if($id!=""){
-        $sql="SELECT * FROM aspirants WHERE Status='".$id."'";
+function getConstituencies($id)
+{
+    $sql = "SELECT DISTINCT name FROM subcounties WHERE county_id='" . $id . "'";
+    include 'getRecords.php';
+    $result = getRecord($sql);
+    $output = "";
+    while ($rows = $result->fetch_assoc()) {
+        $output .= "<option value='" . $rows['name'] . "'>" . $rows['name'] . "</option>";
     }
-    $sql="SELECT * FROM aspirants";
+    return $output;
+}
+
+function getWards($id)
+{
+    $sql = "SELECT * FROM subcounties WHERE name='" . $id . "'";
+    include 'getRecords.php';
+    $result = getRecord($sql);
+    $output = "";
+    while ($rows = $result->fetch_assoc()) {
+        $output .= "<option value='" . $rows['ward'] . "'>" . $rows['ward'] . "</option>";
+    }
+    return $output;
+}
+
+function getAspirants($id)
+{
+    if ($id != "") {
+        $sql = "SELECT * FROM aspirants WHERE Status='" . $id . "'";
+    }
+    $sql = "SELECT * FROM aspirants";
     include "getRecords.php";
-    $result=getRecord($sql);
+    $result = getRecord($sql);
     return $result;
 }
 
-function change_acc_status($id,$action){
-    $sql="UPDATE aspirants SET Status='".$action."' WHERE UserID='".$id."'";
+function change_acc_status($id, $action)
+{
+    $sql = "UPDATE aspirants SET Status='" . $action . "' WHERE UserID='" . $id . "'";
     include "putRecords.php";
     return put($sql)['status'];
 }

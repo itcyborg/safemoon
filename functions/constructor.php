@@ -156,3 +156,10 @@ if(isset($_POST['modifyaccount'])){
 
     }
 }
+
+if(isset($_POST['welcomemsg'])){
+    $file=fopen('../uploads/welcome/welcome.txt','w') or die("Failed to create file");
+    $txt=$_POST['message'];
+    fwrite($file,$txt);
+    fclose($file);
+}

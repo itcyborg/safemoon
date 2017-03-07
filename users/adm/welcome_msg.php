@@ -149,8 +149,20 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <div class="card-header">Welcome Message</div>
 
                         <div class="card-content">
+                            <div class="form-info card-description">
+                                Enter the welcome message you wish to be sent to client's email. To append these client info:<br>
+                                Email: [email], Username: [username], Contact: [contact], Sitename:[sitename], Admin:[admin],
+                                Admin Email: [aemail]
+                                <hr>
+                                <br>
+                            </div>
                             <form action="../../functions/constructor.php" method="post" enctype="multipart/form-data">
-                                <textarea id="welcome_msg"></textarea>
+                                <textarea id="welcome_msg" name="message">
+                                    <?php $file=fopen('../../uploads/welcome/welcome.txt','r');
+                                          echo fread($file,filesize('../../uploads/welcome/welcome.txt'));
+                                          fclose($file);
+                                    ?>
+                                </textarea>
                                 <button name="welcomemsg" class="btn btn-primary pull-right">Submit</button>
                             </form>
                         </div>
