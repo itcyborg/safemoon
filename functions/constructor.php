@@ -101,6 +101,7 @@ if(isset($_POST['getaspirants'])){
     $output="";
     while($row=$result->fetch_assoc()){
         $id=$row['UserID'];
+        $cid='acc_action'.$id;
         if($row['Status']==1){
             $status="<div class='btn btn-success btn-sm disabled'>Enabled</div>";
         }elseif ($row['Status']==3){
@@ -109,23 +110,23 @@ if(isset($_POST['getaspirants'])){
             $status="<div class='btn btn-warning btn-sm disabled'>Pending</div>";
         }
         $output.="<tr>
-                    <td>".$row['UserID']."</td>
-                    <td>".$row['Party']."</td>
+                    <td>".$row["UserID"]."</td>
+                    <td>".$row["Party"]."</td>
                     <td>".$row['Position']."</td>
                     <td>
-                        <button class='btn btn-primary btn-sm' data-toggle=\"collapse\" data-target='#about".$row['UserID']."'>About</button>
-                        <div id='about".$row['UserID']."' class=\"collapse\">
+                        <button class='btn btn-primary btn-sm' data-toggle='collapse' data-target='#about".$row['UserID']."'>About</button>
+                        <div id='about".$row["UserID"]."' class='collapse'>
                             ".$row['About']."
                         </div>
                     </td>
                     <td>
-                        <button class='btn btn-primary btn-sm' data-toggle=\"collapse\" data-target='#manifesto".$row['UserID']."'>Manifesto</button>
-                        <div id='manifesto".$row['UserID']."' class=\"collapse\">
+                        <button class='btn btn-primary btn-sm' data-toggle='collapse' data-target='#manifesto".$row['UserID']."'>Manifesto</button>
+                        <div id='manifesto".$row['UserID']."' class='collapse'>
                             ".$row['Manifesto']."
                         </div>
                     </td>
                     <td>".$status."</td>
-                    <td><select class='form-control' id='acc_action' onchange='acc_change(\"".$id."\")'><option value='none'>Select Action</option>
+                    <td><select class='form-control' id='".$cid."' onchange='acc_change(\"".$id."\")'><option value='none'>Select Action</option>
                     <option value='activate'>Activate</option>
                     <option value='deactivate'>Deactivate</option>
                     <option value='message'>Send Message</option></select></td>
@@ -154,6 +155,8 @@ if(isset($_POST['modifyaccount'])){
         }
     }elseif ($action=="message"){
 
+    }else{
+        echo 'unknown';
     }
 }
 

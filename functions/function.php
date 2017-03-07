@@ -84,9 +84,6 @@ function createAccount($array)
 
         $mail->AltBody =html_entity_decode(strip_tags($msg)) ;
 
-        //Attach an image file
-        echo $msg;
-
         //$mail->addAttachment('images/phpmailer_mini.png');
 
 
@@ -94,11 +91,11 @@ function createAccount($array)
 
         if (!$mail->send()) {
 
-            echo "Mailer Error: " . $mail->ErrorInfo;
+            //echo "Mailer Error: " . $mail->ErrorInfo;
 
         } else {
 
-            echo "Message sent!";
+            //echo "Message sent!";
 
         }
     }
@@ -305,8 +302,9 @@ function getAspirants($id)
 {
     if ($id != "") {
         $sql = "SELECT * FROM aspirants WHERE Status='" . $id . "'";
+    }else {
+        $sql = "SELECT * FROM aspirants";
     }
-    $sql = "SELECT * FROM aspirants";
     include "getRecords.php";
     $result = getRecord($sql);
     return $result;

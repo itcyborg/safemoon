@@ -18,7 +18,7 @@
     <link rel="icon" type="image/png" href="....//assets/img/favicon.png"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>Material Dashboard by Creative Tim</title>
+    <title>Safemoon</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
@@ -33,8 +33,8 @@
     <link href="../../assets/css/demo.css" rel="stylesheet"/>
 
     <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
           type='text/css'>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -232,7 +232,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <script type="text/javascript">
 
     function acc_change(id){
-        var action=$('#acc_action').val();
+        var action=$('#acc_action'+id).val();
         $.ajax({
             url: '../../functions/constructor.php',
             data: {
@@ -244,15 +244,16 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             beforeSend: function () {
             },
             success: function (data) {
-                alert(data);
+                if(data=="Success"){
+
+                }else{
+                    alert(data);
+                }
+                getaspirantslist();
             }
         });
     }
-    $(document).ready(function () {
-
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-
+    function getaspirantslist(){
         $.ajax({
             url: '../../functions/constructor.php',
             data: {
@@ -266,6 +267,13 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 $('#tbody').html(data);
             }
         });
+    }
+    $(document).ready(function () {
+
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+        getaspirantslist();
     });
 </script>
 

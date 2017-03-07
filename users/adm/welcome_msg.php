@@ -33,8 +33,8 @@ if($_SESSION['role']!=1){
     <link href="../../assets/css/demo.css" rel="stylesheet"/>
 
     <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
           type='text/css'>
 </head>
 
@@ -152,7 +152,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                             <div class="form-info card-description">
                                 Enter the welcome message you wish to be sent to client's email. To append these client info:<br>
                                 Email: [email], Username: [username], Contact: [contact], Sitename:[sitename], Admin:[admin],
-                                Admin Email: [aemail]
+                                Admin Email: [aemail] ,Logo: [logo]
                                 <hr>
                                 <br>
                             </div>
