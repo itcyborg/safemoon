@@ -84,6 +84,12 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p> &nbsp;&nbsp;Parties</p>
                     </a>
                 </li>
+                <li>
+                    <a href="welcome_msg.php">
+                        <i class="material-icons">sms</i>
+                        <p>Welcome Message</p>
+                    </a>
+                </li>
                 <li class="disabled">
                     <a href="notifications.html">
                         <i class="material-icons text-gray">notifications</i>
@@ -154,6 +160,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                     <th>About</th>
                                     <th>Manifesto</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbody"></tbody>
@@ -223,6 +230,24 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <script src="../../assets/js/demo.js"></script>
 
 <script type="text/javascript">
+
+    function acc_change(id){
+        var action=$('#acc_action').val();
+        $.ajax({
+            url: '../../functions/constructor.php',
+            data: {
+                'modifyaccount':1,
+                'account':action,
+                'id':id
+            },
+            type: 'POST',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
     $(document).ready(function () {
 
         // Javascript method's body can be found in assets/js/demos.js
@@ -241,7 +266,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 $('#tbody').html(data);
             }
         });
-
     });
 </script>
 

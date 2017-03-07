@@ -100,12 +100,13 @@ if(isset($_POST['getaspirants'])){
     $result=getAspirants($type);
     $output="";
     while($row=$result->fetch_assoc()){
+        $id=$row['UserID'];
         if($row['Status']==1){
             $status="<div class='btn btn-success btn-sm disabled'>Enabled</div>";
         }elseif ($row['Status']==3){
-            $status="<div class='btn btn-danger disabled btn-sm'>Deactivated</div>";
+            $status="<div class='btn btn-danger btn-sm disabled'>Deactivated</div>";
         }elseif ($row['Status']==0){
-            $status="<div class='btn btn-warning disabled btn-sm'>Pending</div>";
+            $status="<div class='btn btn-warning btn-sm disabled'>Pending</div>";
         }
         $output.="<tr>
                     <td>".$row['UserID']."</td>
@@ -124,7 +125,34 @@ if(isset($_POST['getaspirants'])){
                         </div>
                     </td>
                     <td>".$status."</td>
+                    <td><select class='form-control' id='acc_action' onchange='acc_change(\"".$id."\")'><option value='none'>Select Action</option>
+                    <option value='activate'>Activate</option>
+                    <option value='deactivate'>Deactivate</option>
+                    <option value='message'>Send Message</option></select></td>
                    </tr>";
     }
     echo $output;
+}
+
+if(isset($_POST['modifyaccount'])){
+    $action=$_POST['account'];
+    $id=$_POST['id'];
+    include 'function.php';
+    if($action=="activate"){
+        $res=change_acc_status($id,1);
+        if($res){
+            echo "Success";
+        }else{
+            echo "Failed";
+        }
+    }elseif ($action=="deactivate"){
+        $res=change_acc_status($id,3);
+        if($res){
+            echo "Success";
+        }else{
+            echo "Failed";
+        }
+    }elseif ($action=="message"){
+
+    }
 }

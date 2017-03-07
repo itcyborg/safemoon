@@ -5,7 +5,7 @@
       <webServer id="dada68bc-73f2-4433-b67a-b564a68bbd3c" name="https://www.safemoon.com" url="http://ftp.safemoon.com">
         <fileTransfer host="ftp.safemoon.com" port="21">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" showHiddenFiles="true" />
+            <advancedOptions dataProtectionLevel="Private" showHiddenFiles="true" />
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>

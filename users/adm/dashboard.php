@@ -80,6 +80,12 @@ if($_SESSION['role']!=1){
 	                        <p> &nbsp;&nbsp;Parties</p>
 	                    </a>
 	                </li>
+                    <li>
+                        <a href="welcome_msg.php">
+                            <i class="material-icons">sms</i>
+                            <p>Welcome Message</p>
+                        </a>
+                    </li>
 	                <li class="disabled">
 	                    <a href="notifications.html">
 	                        <i class="material-icons text-gray">notifications</i>

@@ -244,3 +244,9 @@ function getAspirants($id){
     $result=getRecord($sql);
     return $result;
 }
+
+function change_acc_status($id,$action){
+    $sql="UPDATE aspirants SET Status='".$action."' WHERE UserID='".$id."'";
+    include "putRecords.php";
+    return put($sql)['status'];
+}

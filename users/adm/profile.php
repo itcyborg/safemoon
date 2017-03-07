@@ -81,6 +81,12 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p> &nbsp;&nbsp;Parties</p>
                     </a>
                 </li>
+                <li>
+                    <a href="welcome_msg.php">
+                        <i class="material-icons">sms</i>
+                        <p>Welcome Message</p>
+                    </a>
+                </li>
                 <li class="disabled">
                     <a href="notifications.html">
                         <i class="material-icons text-gray">notifications</i>

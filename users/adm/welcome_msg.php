@@ -1,14 +1,14 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: itcyb
+ * Date: 3/7/2017
+ * Time: 8:03 AM
+ */
 @session_start();
 if($_SESSION['role']!=1){
     header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
 }
-/**
- * Created by PhpStorm.
- * User: itcyb
- * Date: 3/3/2017
- * Time: 9:12 AM
- */
 ?>
 <!doctype html>
 <html lang="en">
@@ -18,7 +18,7 @@ if($_SESSION['role']!=1){
     <link rel="icon" type="image/png" href="....//assets/img/favicon.png"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>Material Dashboard by Creative Tim</title>
+    <title>Safemoon</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
@@ -75,13 +75,13 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p>Aspirants</p>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="parties.php">
                         <i class="material-icons">group add</i>
                         <p> &nbsp;&nbsp;Parties</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="welcome_msg.php">
                         <i class="material-icons">sms</i>
                         <p>Welcome Message</p>
@@ -146,14 +146,12 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             <div class="container-fluid">
                 <div class="row">
                     <div class="card">
-                        <div class="card-header">Add Party</div>
+                        <div class="card-header">Welcome Message</div>
 
                         <div class="card-content">
-                            <form action="../../functions/constructor.php" method="post">
-                                <input type="text" placeholder="Party Name" name="partyname" id="partyname" class="form-control">
-                                <input type="text" placeholder="Abbreviation" name="abbr" id="abbr" class="form-control">
-                                <input type="text" placeholder="Patron Name (First Middle Last)" name="patron" id="patron" class="form-control">
-                                <button name="addparty" class="btn btn-primary">Submit</button>
+                            <form action="../../functions/constructor.php" method="post" enctype="multipart/form-data">
+                                <textarea id="welcome_msg"></textarea>
+                                <button name="welcomemsg" class="btn btn-primary pull-right">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -219,20 +217,29 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
 
+<!-- CKeditor -->
+<script src="../../assets/ckeditor/ckeditor.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
 
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
+        CKEDITOR.replace("welcome_msg");
 
         $.ajax({
             url: '../../functions/constructor.php',
-            data: 'gettotalusers',
+            data: 'getuserprofile',
             type: 'POST',
+            dataType:'JSON',
             beforeSend: function () {
             },
             success: function (data) {
-                $('#totalusers').html(data);
+                console.log(data);
+                $('#pich').html('<img class="img-rounded img-responsive" src="'+data.photo+'">');
+                $('#firstname').val(data.first);
+                $('#middlename').val(data.middle);
+                $('#lastname').val(data.last);
             }
         });
 
@@ -240,3 +247,4 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 </script>
 
 </html>
+
