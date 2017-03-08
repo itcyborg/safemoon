@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: itcyb
+ * Date: 3/7/2017
+ * Time: 10:19 PM
+ */
 @session_start();
 if($_SESSION['role']!=1){
     header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
@@ -50,7 +56,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 -->
 
         <div class="logo">
-            <a href="http://www.creative-tim.com" class="simple-text">
+            <a href="../../" class="simple-text">
                 Safemoon
             </a>
         </div>
@@ -63,7 +69,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="profile.php">
                         <i class="material-icons">person</i>
                         <p>User Profile</p>
@@ -81,7 +87,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p> &nbsp;&nbsp;Parties</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="messages.php">
                         <i class="material-icons">forum</i>
                         <p>Messages</p>
@@ -152,27 +158,35 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             <div class="container-fluid">
                 <div class="row">
                     <div class="card">
-                        <div class="card-header">Profile</div>
-
+                        <div class="card-header">Messages</div>
+                        <style>
+                            #message-content{
+                                min-height: 250px;
+                                height: 350px;
+                            }
+                            #persons-content{
+                                min-height: 250px;
+                                height: 350px;
+                                overflow: auto;
+                            }
+                        </style>
                         <div class="card-content">
-                            <form action="../../functions/constructor.php" method="post" enctype="multipart/form-data">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div id="profilepic" class="col-lg-5 col-md-4 col-sm-12">
-                                        <div style="width:200px; height: 200px;" id="pich">
-                                            <img id="profpic" class="img-rounded img-responsive" src="../../uploads/profiles/default.jpg">
-                                        </div>
-                                        <label class="btn btn-primary">
-                                            Upload<input class="form-control" name="pic" id="pic" type="file" hidden accept="image/*">
-                                        </label>
-                                    </div>
-                                    <div id="profile" class="col-lg-5 col-md-4 col-sm-12">
-                                        <input type="text" placeholder="First Name" name="firstname" id="firstname" class="form-control">
-                                        <input type="text" placeholder="Middle Name" name="middlename" id="middlename" class="form-control">
-                                        <input type="text" placeholder="Last Name" name="lastname" id="lastname" class="form-control">
-                                    </div>
+                            <div class="col-lg-4 col-md-3 col-2" id="persons-content">
+                            </div>
+                            <div class="col-lg-8 col-md-9 col-10" id="chat_messages">
+                                <div class="col-lg-12 col-md-12 col-sm-12" id="message-body">
+                                    <textarea class="col-lg-12 col-md-12 col-sm-12" disabled id="message-content" style="height:100%;"></textarea>
                                 </div>
-                                <button name="updateprofile" class="btn btn-primary pull-right">Submit</button>
-                            </form>
+                                <div class="col-lg-12 col-md-12 col-sm-12" id="message-text">
+                                    <div class="form-group  is-empty c col-md-10 col-lg-10 col-sm-10">
+                                        <textarea type="text" class="form-control" placeholder="Reply"></textarea>
+                                        <span class="material-input"></span>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-round btn-just-icon col-md-1 col-lg-1 col-sm-1">
+                                        <i class="material-icons">send</i><div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,12 +250,10 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
+<script src="../../assets/ckeditor/ckeditor.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
 
         $.ajax({
             url: '../../functions/constructor.php',
