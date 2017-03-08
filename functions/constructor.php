@@ -198,25 +198,24 @@ if(isset($_POST['getchatmessages'])){
             if($sender==$_SESSION['userid']){
                 $se="You";
             }
-            $output.="<div class='media'>
-                  <div class='col-md-12 text-right'>
+            $output.="<div class='media col-md-10 col-md-offset-2 alert alert-default'>
+                  <div class='col-md-12 text-right text-primary'>
                     <i class='text-right'>".$se."</i>
                   </div>
-                  <div class='media-body text-right'>
+                  <div class='media-body text-right text-success'>
                     <p>".html_entity_decode($row['Message'])."</p>
                   </div>
                 </div>";
         }else{
-            $output.="<div class='media text-left'>
-                  <div class='col-md-12'>
-                        ".$row['Sender']."    
+            $output.="<div class='media col-md-10 alert alert-warning'>
+                  <div class='col-md-12 text-primary'>
+                        ".$row['Username']."    
                   </div>
                   <div class='media-body'>
                     <p>".$row['Message']."</p>
                   </div>
                 </div>";
         }
-        $output.="<hr role='separator'>";
     }
     echo $output;
 }
@@ -228,4 +227,19 @@ if(isset($_POST['sendmessage'])){
     include "function.php";
     $res=sendMessage($msg,$to,$from);
     var_dump($res);
+}
+
+if(isset($_POST['searchuser'])){
+    $term=$_POST['data'];
+    include "function.php";
+    $res=searchuser($term);
+    $output="";
+    while($row=$res->fetch_assoc()){
+        if($row['UserID']!=$_SESSION['userid']) {
+            $output .= "<li onclick='getmessages(\"" . $row['UserID'] . "\")' class='list-group-item'><div class='media'>
+        <div class='media-body'>
+          <h4 class='media-heading'>" . $row['Username'] . "<small> | <i>" . $row['Email'] . " <small>(" . $row['UserID'] . ")</small></i></small></i></h4></li>";
+        }
+    }
+    echo $output;
 }

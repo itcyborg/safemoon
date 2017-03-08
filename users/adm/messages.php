@@ -174,11 +174,11 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         </style>
                         <div class="card-content">
                             <div class="col-lg-4 col-md-3 col-2">
-                                <input type="text" class="col-md-12 form-control input-sm" placeholder="Search user">
+                                <input type="text" onkeyup="searchuser()" class="col-md-12 form-control input-sm" placeholder="Search user" id="searchuser">
                                 <div class="col-md-12 col-lg-12 col-sm-12" id="persons-content"></div>
                             </div>
                             <div class="col-lg-8 col-md-9 col-10" id="chat_messages">
-                                <div style="background-color:lightgray;" class="col-lg-12 col-md-12 col-sm-12" id="message-body">
+                                <div style="background-color:white;" class="col-lg-12 col-md-12 col-sm-12" id="message-body">
                                     <div class="col-lg-12 col-md-12 col-sm-12" id="message-content" style="height:100%;"></div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12" id="message-text">
@@ -265,9 +265,13 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 $('#message-content').html("Loading");
             },
             success:function(data){
-                $('#message-content').html(data);
-                var elem = document.getElementById('message-content');
-                elem.scrollTop = elem.scrollHeight;
+                if(data!="") {
+                    $('#message-content').html(data);
+                    var elem = document.getElementById('message-content');
+                    elem.scrollTop = elem.scrollHeight;
+                }else{
+                    $('#message-content').html("now chatting with "+current);
+                }
             }
         });
 
@@ -313,6 +317,27 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             });
         }else{
             alert("Please select the person you want to send the message to.");
+        }
+    }
+    function searchuser(){
+        var search =$('#searchuser').val().trim();
+        if(search!="") {
+            $.ajax({
+                url: '../../functions/constructor.php',
+                data: {
+                    'searchuser': 1,
+                    'data': search
+                },
+                type: 'POST',
+                beforeSend: function () {
+
+                },
+                success: function (data) {
+                    $('#persons-content').html(data);
+                }
+            });
+        }else{
+            getusers();
         }
     }
     $(document).ready(function () {

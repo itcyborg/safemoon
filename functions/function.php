@@ -326,7 +326,7 @@ function getchatusers(){
 }
 
 function getchatmessages($sender,$recipient){
-    $sql="SELECT * FROM messages WHERE Sender='".$sender."' && Recepient='".$recipient."' || Sender='".$recipient."' && Recepient='".$sender."'";
+    $sql="SELECT messages.*,users.* FROM messages INNER JOIN users ON users.UserID=messages.Sender WHERE Sender='".$sender."' && Recepient='".$recipient."' || Sender='".$recipient."' && Recepient='".$sender."'";
     include "getRecords.php";
     $result=getRecord($sql);
     return $result;
@@ -336,5 +336,12 @@ function sendMessage($msg,$to,$from){
     include "putRecords.php";
     $sql="INSERT INTO messages (Sender,Recepient,Message) VALUES ('".$from."','".$to."','".$msg."')";
     $result=put($sql);
+    return $result;
+}
+
+function searchuser($term){
+    $sql="SELECT * FROM users WHERE Username LIKE '%".$term."%' || Email LIKE '%".$term."%' || Contact LIKE '%".$term."%'";
+    include "getRecords.php";
+    $result=getRecord($sql);
     return $result;
 }
