@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 /**
  * Created by PhpStorm.
  * User: PAVILION 15
@@ -315,4 +315,26 @@ function change_acc_status($id, $action)
     $sql = "UPDATE aspirants SET Status='" . $action . "' WHERE UserID='" . $id . "'";
     include "putRecords.php";
     return put($sql)['status'];
+}
+
+function getchatusers(){
+    $sender=$_SESSION['userid'];
+    $sql="SELECT DISTINCT users.*,messages.* FROM messages INNER JOIN users ON users.UserID=messages.Sender WHERE messages.Recepient='".$sender."'";
+    include "getRecords.php";
+    $result=getRecord($sql);
+    return $result;
+}
+
+function getchatmessages($sender,$recipient){
+    $sql="SELECT * FROM messages WHERE Sender='".$sender."' && Recepient='".$recipient."' || Sender='".$recipient."' && Recepient='".$sender."'";
+    include "getRecords.php";
+    $result=getRecord($sql);
+    return $result;
+}
+
+function sendMessage($msg,$to,$from){
+    include "putRecords.php";
+    $sql="INSERT INTO messages (Sender,Recepient,Message) VALUES ('".$from."','".$to."','".$msg."')";
+    $result=put($sql);
+    return $result;
 }

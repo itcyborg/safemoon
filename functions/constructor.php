@@ -1,4 +1,5 @@
 <?php
+@session_start();
 /**
  * Created by PhpStorm.
  * User: PAVILION 15
@@ -49,6 +50,7 @@ if(isset($_POST['updateprofile'])){
     include 'function.php';
     updateProfile($array);
 }
+
 if(isset($_POST['getuserprofile'])){
     include 'function.php';
     echo json_encode(getProfile());
@@ -68,6 +70,7 @@ if(isset($_POST['getparty'])){
     include 'function.php';
     echo getParties();
 }
+
 if(isset($_POST['getCounties'])){
     include 'function.php';
     echo getCounties();
@@ -165,4 +168,64 @@ if(isset($_POST['welcomemsg'])){
     $txt=$_POST['message'];
     fwrite($file,$txt);
     fclose($file);
+}
+
+if(isset($_POST['getchatusers'])){
+    include "function.php";
+    $res=getchatusers();
+    $count=$res->num_rows;
+    $output="";
+    if($count<1){
+        echo 'No existing chats';
+    }else{
+        while($row=$res->fetch_assoc()){
+            $output.="<li onclick='getmessages(\"".$row['UserID']."\")' class='list-group-item'><div class='media'>
+        <div class='media-body'>
+          <h4 class='media-heading'>".$row['Username']."<small> | <i>".$row['Email']."</i></small></h4></li>";
+        }
+        echo $output;
+    }
+}
+
+if(isset($_POST['getchatmessages'])){
+    $sender=$_SESSION['userid'];
+    $recipient=$_POST['id'];
+    include "function.php";
+    $res=getchatmessages($sender,$recipient);
+    $output="";
+    while ($row=$res->fetch_assoc()){
+        if($row['Sender']===$sender){
+            if($sender==$_SESSION['userid']){
+                $se="You";
+            }
+            $output.="<div class='media'>
+                  <div class='col-md-12 text-right'>
+                    <i class='text-right'>".$se."</i>
+                  </div>
+                  <div class='media-body text-right'>
+                    <p>".html_entity_decode($row['Message'])."</p>
+                  </div>
+                </div>";
+        }else{
+            $output.="<div class='media text-left'>
+                  <div class='col-md-12'>
+                        ".$row['Sender']."    
+                  </div>
+                  <div class='media-body'>
+                    <p>".$row['Message']."</p>
+                  </div>
+                </div>";
+        }
+        $output.="<hr role='separator'>";
+    }
+    echo $output;
+}
+
+if(isset($_POST['sendmessage'])){
+    $msg=htmlentities($_POST['msg']);
+    $to=$_POST['to'];
+    $from=$_SESSION['userid'];
+    include "function.php";
+    $res=sendMessage($msg,$to,$from);
+    var_dump($res);
 }

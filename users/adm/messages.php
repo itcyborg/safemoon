@@ -162,7 +162,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <style>
                             #message-content{
                                 min-height: 250px;
-                                height: 350px;
+                                max-height: 350px;
+                                overflow: auto;
+
                             }
                             #persons-content{
                                 min-height: 250px;
@@ -171,18 +173,20 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                             }
                         </style>
                         <div class="card-content">
-                            <div class="col-lg-4 col-md-3 col-2" id="persons-content">
+                            <div class="col-lg-4 col-md-3 col-2">
+                                <input type="text" class="col-md-12 form-control input-sm" placeholder="Search user">
+                                <div class="col-md-12 col-lg-12 col-sm-12" id="persons-content"></div>
                             </div>
                             <div class="col-lg-8 col-md-9 col-10" id="chat_messages">
-                                <div class="col-lg-12 col-md-12 col-sm-12" id="message-body">
-                                    <textarea class="col-lg-12 col-md-12 col-sm-12" disabled id="message-content" style="height:100%;"></textarea>
+                                <div style="background-color:lightgray;" class="col-lg-12 col-md-12 col-sm-12" id="message-body">
+                                    <div class="col-lg-12 col-md-12 col-sm-12" id="message-content" style="height:100%;"></div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12" id="message-text">
                                     <div class="form-group  is-empty c col-md-10 col-lg-10 col-sm-10">
-                                        <textarea type="text" class="form-control" placeholder="Reply"></textarea>
+                                        <textarea type="text" class="form-control" placeholder="Reply" id="msg"></textarea>
                                         <span class="material-input"></span>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-round btn-just-icon col-md-1 col-lg-1 col-sm-1">
+                                    <button onclick="sendMessage()" type="submit" class="btn btn-primary btn-round btn-just-icon col-md-1 col-lg-1 col-sm-1">
                                         <i class="material-icons">send</i><div class="ripple-container"></div>
                                     </button>
                                 </div>
@@ -242,35 +246,77 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!--  Notifications Plugin    -->
 <script src="../../assets/js/bootstrap-notify.js"></script>
 
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
-
 <!-- Material Dashboard javascript methods -->
 <script src="../../assets/js/material-dashboard.js"></script>
-
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../../assets/js/demo.js"></script>
 <script src="../../assets/ckeditor/ckeditor.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-
+    var current="";
+    function getmessages(id){
+        current=id;
         $.ajax({
             url: '../../functions/constructor.php',
-            data: 'getuserprofile',
-            type: 'POST',
-            dataType:'JSON',
-            beforeSend: function () {
+            data: {
+                'getchatmessages':1,
+                'id':id
             },
-            success: function (data) {
-                console.log(data);
-                $('#pich').html('<img class="img-rounded img-responsive" src="'+data.photo+'">');
-                $('#firstname').val(data.first);
-                $('#middlename').val(data.middle);
-                $('#lastname').val(data.last);
+            type:   'post',
+            beforeSend: function () {
+                $('#message-content').html("Loading");
+            },
+            success:function(data){
+                $('#message-content').html(data);
+                var elem = document.getElementById('message-content');
+                elem.scrollTop = elem.scrollHeight;
             }
         });
 
+    }/*
+    function getuser(name){
+
+    }*/
+    function getusers(){
+        $.ajax({
+            url:        '../../functions/constructor.php',
+            data:       'getchatusers',
+            type:       'POST',
+            beforeSend: function(){
+            },
+            success:    function(data){
+                if(data=="No existing chats"){
+                    $('#persons-content').html(data);
+                }else{
+                    $('#persons-content').html("<ul class='list-group'>"+data+"</ul>");
+                }
+            }
+        });
+    }
+    function sendMessage(){
+        var msg=$('#msg').val().trim();
+        if(current!=""){
+            $.ajax({
+                url:    '../../functions/constructor.php',
+                data:   {
+                    'sendmessage':1,
+                    'msg':msg,
+                    'to':current
+                },
+                type:   'POST',
+                beforeSend: function () {
+
+                },
+                success :function (data) {
+                    alert(data);
+                    getmessages(current);
+                    $('#msg').html("");
+                }
+            });
+        }else{
+            alert("Please select the person you want to send the message to.");
+        }
+    }
+    $(document).ready(function () {
+        getusers();
     });
 </script>
 

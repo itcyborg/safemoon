@@ -165,7 +165,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div id="profilepic" class="col-lg-5 col-md-4 col-sm-12">
                                         <div style="width:200px; height: 200px;" id="pich">
-                                            <img id="profpic" class="img-rounded img-responsive" src="../../uploads/profiles/default.jpg">
+                                            <img id="profpic" class="img-rounded img-responsive" src="../../uploads/profiles/default_prof.jpg">
                                         </div>
                                         <label class="btn btn-primary">
                                             Upload<input class="form-control" name="pic" id="pic" type="file" hidden accept="image/*">

@@ -5,9 +5,6 @@
 
     function put($sql){
         $conn=getconn();
-
-        $sql=mysqli_real_escape_string($conn,$sql);
-        $sql=stripslashes($sql);
         if($conn->query($sql)===TRUE){
             return array('status'=>true,'id'=>$conn->insert_id);
         }else{
