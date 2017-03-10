@@ -46,7 +46,8 @@ if(isset($_POST['updateprofile'])){
     $firstname=$_POST['firstname'];
     $middlename=$_POST['middlename'];
     $lastname=$_POST['lastname'];
-    $array=array('profile'=>$photo,'first'=>$firstname,'middle'=>$middlename,'last'=>$lastname);
+    $twitter=$_POST['twitter'];
+    $array=array('profile'=>$photo,'first'=>$firstname,'middle'=>$middlename,'last'=>$lastname,'twitter'=>$twitter);
     include 'function.php';
     updateProfile($array);
 }
@@ -242,4 +243,12 @@ if(isset($_POST['searchuser'])){
         }
     }
     echo $output;
+}
+
+if(isset($_POST['getcount'])){
+    if(isset($_POST['messages']) && isset($_POST['notifications'])){
+        include "function.php";
+        $res=getcounts();
+        echo json_encode($res);
+    }
 }

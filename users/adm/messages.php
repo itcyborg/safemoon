@@ -90,7 +90,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 <li class="active">
                     <a href="messages.php">
                         <i class="material-icons">forum</i>
-                        <p>Messages</p>
+                        <p>Messages <span class="badge" id="msgcount"></span></p>
                     </a>
                 </li>
                 <li>
@@ -131,16 +131,22 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="material-icons">notifications</i>
-                                <span class="notification">5</span>
+                                <i class="material-icons">sms</i>
+                                <span class="notification" id="msgcount1">0</span>
                                 <p class="hidden-lg hidden-md">Notifications</p>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Mike John responded to your email</a></li>
-                                <li><a href="#">You have 5 new tasks</a></li>
-                                <li><a href="#">You're now friend with Andrew</a></li>
-                                <li><a href="#">Another Notification</a></li>
-                                <li><a href="#">Another One</a></li>
+                            <ul class="dropdown-menu" id="msgbody">
+                                <li class="disabled"><a href="#">No new Messages</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">notifications</i>
+                                <span class="notification">0</span>
+                                <p class="hidden-lg hidden-md">Notifications</p>
+                            </a>
+                            <ul class="dropdown-menu" id="notifbody">
+                                <li class="disabled"><a href="#"> No new Notifications</a></li>
                             </ul>
                         </li>
                         <li>
@@ -340,8 +346,36 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             getusers();
         }
     }
+    function getcounts(){
+        $.ajax({
+            url     :   '../../functions/constructor.php',
+            data    :   {
+                'getcount':1,
+                'messages':1,
+                'notifications':1
+            },
+            dataType:   'JSON',
+            type    :   'POST',
+            beforeSend: function () {
+
+            },
+            success :   function (data) {
+                $('#msgcount,#mscount').html(data.messages);
+                $('#msgcount1').html(data.messages);
+                $('#notificationcount').html(data.notifications);
+                $('#msgbody').html(data.msg);
+                if(data.notif.trim()==""){
+                    $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
+                }else {
+                    $('#notifbody').html(data.notif);
+                    alert(data.notif);
+                }
+            }
+        });
+    }
     $(document).ready(function () {
         getusers();
+        getcounts();
     });
 </script>
 

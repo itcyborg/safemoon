@@ -3,6 +3,7 @@
 if($_SESSION['role']!=3){
     header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
 }
+
 /**
  * Created by PhpStorm.
  * User: itcyb
@@ -261,6 +262,7 @@ if($_SESSION['role']!=3){
     	$(document).ready(function(){
 
 			// Javascript method's body can be found in assets/js/demos.js
+
         	demo.initDashboardPageCharts();
 
         	$.ajax({

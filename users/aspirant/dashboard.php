@@ -204,7 +204,6 @@ if($_SESSION['role']!=2){
 								</div>
 							</div>
 						</div>
-
 						<div class="col-lg-3 col-md-6 col-sm-6">
 							<div class="card card-stats">
 								<div class="card-header" data-background-color="blue">
@@ -222,6 +221,16 @@ if($_SESSION['role']!=2){
 							</div>
 						</div>
 					</div>
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-header">Twitter</div>
+                                <div class="card-content" style="max-height: 500px;overflow: auto;">
+                                    <a class="twitter-timeline" href="https://twitter.com/TwitterDev">Tweets by TwitterDev</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 

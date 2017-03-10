@@ -175,6 +175,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                         <input type="text" placeholder="First Name" name="firstname" id="firstname" class="form-control">
                                         <input type="text" placeholder="Middle Name" name="middlename" id="middlename" class="form-control">
                                         <input type="text" placeholder="Last Name" name="lastname" id="lastname" class="form-control">
+                                        <input type="text" placeholder="Twitter username(without @)" name="twitter" id="twitter" class="form-control">
                                     </div>
                                 </div>
                                 <button name="updateprofile" class="btn btn-primary pull-right">Submit</button>
@@ -240,15 +241,8 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard javascript methods -->
 <script src="../../assets/js/material-dashboard.js"></script>
 
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../../assets/js/demo.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
-
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-
         $.ajax({
             url: '../../functions/constructor.php',
             data: 'getuserprofile',
@@ -262,6 +256,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 $('#firstname').val(data.first);
                 $('#middlename').val(data.middle);
                 $('#lastname').val(data.last);
+                $('#twitter').val(data.twitter);
             }
         });
 

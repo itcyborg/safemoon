@@ -98,6 +98,8 @@ function createAccount($array)
             //echo "Message sent!";
 
         }
+        $_SESSION['firsttime']=true;
+        login(array('email'=>$email,'password'=>$array['password']));
     }
 }
 
@@ -165,7 +167,7 @@ function updateProfile($array)
     $filename = "F" . $_SESSION['userid'];
     $userid = $_SESSION['userid'];
     $target_file = $target_dir . $filename . "." . $ext;
-    $sql = "INSERT INTO profile (FirstName, MiddleName, LastName, UserID, ProfilePic,Ext) VALUES ('" . $array['first'] . "','" . $array['middle'] . "','" . $array['last'] . "','" . $userid . "','" . $filename . "','" . $ext . "')";
+    $sql = "INSERT INTO profile (FirstName, MiddleName, LastName, UserID, ProfilePic,Ext,Twitter) VALUES ('" . $array['first'] . "','" . $array['middle'] . "','" . $array['last'] . "','" . $userid . "','" . $filename . "','" . $ext . "','".$array['twitter']."') ON DUPLICATE KEY UPDATE FirstName='".$array['first']."', MiddleName='".$array['middle']."',LastName='".$array['last']."',Twitter='".$array['twitter']."'";
     include 'putRecords.php';
     $results = put($sql);
     var_dump($results);
@@ -225,7 +227,7 @@ function getProfile()
     $result = getRecord($sql);
     $path = "../../uploads/profiles/";
     $row = $result->fetch_assoc();
-    $response = array('photo' => $path . $row['ProfilePic'] . "." . $row['Ext'], 'first' => $row['FirstName'], 'middle' => $row['MiddleName'], 'last' => $row['LastName']);
+    $response = array('photo' => $path . $row['ProfilePic'] . "." . $row['Ext'], 'first' => $row['FirstName'], 'middle' => $row['MiddleName'], 'last' => $row['LastName'],'twitter'=>$row['Twitter']);
     return $response;
 }
 
@@ -244,7 +246,7 @@ function upgrade($array)
 
 function viewAspirant($id)
 {
-    $sql = 'SELECT aspirants.php.*,profile.*,aspirants.php.* FROM aspirants.php JOIN profile ON aspirants.php.UserID=profile.UserID JOIN aspirants.php ON aspirants.php.UserID=aspirants.php.UserID WHERE aspirants.php.UserID="' . $id . '"';
+    $sql = 'SELECT users.*,profile.*,aspirants.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID JOIN users ON users.UserID=aspirants.UserID WHERE aspirants.UserID="' . $id . '"';
     include "getRecords.php";
     $result = getRecord($sql);
     return $result;
@@ -313,7 +315,21 @@ function getAspirants($id)
 function change_acc_status($id, $action)
 {
     $sql = "UPDATE aspirants SET Status='" . $action . "' WHERE UserID='" . $id . "'";
+    if($_SESSION['role']==1){
+        $initiator="Admin";
+    }else{
+        $initiator=$_SESSION['userid'];
+    }
+    if($action==1){
+        $ac="activated";
+    }elseif($action==3){
+        $ac="deactivated";
+    }
+    $sql1="INSERT INTO notifications(Initiator,Intended,Notification) VALUES ('".$initiator."','".$id."','Your account has been ".$ac." ')";
     include "putRecords.php";
+    if($_SESSION['userid']!=$id) {
+        put($sql1);
+    }
     return put($sql)['status'];
 }
 
@@ -329,6 +345,9 @@ function getchatmessages($sender,$recipient){
     $sql="SELECT messages.*,users.* FROM messages INNER JOIN users ON users.UserID=messages.Sender WHERE Sender='".$sender."' && Recepient='".$recipient."' || Sender='".$recipient."' && Recepient='".$sender."'";
     include "getRecords.php";
     $result=getRecord($sql);
+    $sql="UPDATE messages SET MessageRead='1' WHERE Recepient='".$recipient."'";
+    include "putRecords.php";
+    put($sql);
     return $result;
 }
 
@@ -344,4 +363,27 @@ function searchuser($term){
     include "getRecords.php";
     $result=getRecord($sql);
     return $result;
+}
+
+function getcounts(){
+    include "getRecords.php";
+    $user=$_SESSION['userid'];
+    $sql="SELECT messages.*,users.* FROM messages JOIN users ON users.UserID=messages.Recepient WHERE Recepient='".$user."' && MessageRead='0'";
+    $result=getRecord($sql);
+    $msgoutput="";
+    while($row=$result->fetch_assoc()){
+        $msgoutput.="<li><a href='messages.php'><p>".$row['Message']."</p><small>".$row['Email']."</small></a></li>
+        <hr>";
+    }
+    $msgcount=$result->num_rows;
+    $sql="SELECT * FROM notifications WHERE Intended='".$user."' && Seen='0'";
+    $res=getRecord($sql);
+    $ntfcount=$res->num_rows;
+    $notifout="";
+    if($ntfcount>0) {
+        while ($rows = $res->fetch_assoc()) {
+            $notifout .= "<li><a href='#'><p>" . $row['Notification'] . "</p></a></li>";
+        }
+    }
+    return array('messages'=>$msgcount,'notifications'=>$ntfcount,'msg'=>$msgoutput,'notif'=>$notifout);
 }
