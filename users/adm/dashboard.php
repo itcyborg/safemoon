@@ -1,7 +1,31 @@
 <?php
 @session_start();
+$balance="";
 if($_SESSION['role']!=1){
     header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
+}
+
+require_once('../../libs/AfricasTalkingGateway.php');
+
+// Specify your login credentials
+$username   = "safemoon";
+$apikey     = "932ee5c45eb76188f65252cbf42f75dd5f183f1327e542e8f5a8af8e596ff930";
+
+// Create a new instance of our awesome gateway class
+$gateway    = new AfricasTalkingGateway($username, $apikey);
+
+// Any gateway errors will be captured by our custom Exception class below,
+// so wrap the call in a try-catch block
+try
+{
+    // Fetch the data from our USER resource and read the balance
+    $data = $gateway->getUserData();
+    $balance= $data->balance;
+    // The result will have the format=> KES XXX
+}
+catch ( AfricasTalkingGatewayException $e )
+{
+    $balance= "Encountered an error while fetching user data: ".$e->getMessage()."\n";
 }
 /**
  * Created by PhpStorm.
@@ -92,12 +116,6 @@ if($_SESSION['role']!=1){
                             <p>Welcome Message</p>
                         </a>
                     </li>
-	                <li class="disabled">
-	                    <a href="notifications.html">
-	                        <i class="material-icons text-gray">notifications</i>
-	                        <p>Notifications</p>
-	                    </a>
-	                </li>
 	            </ul>
 	    	</div>
 	    </div>
@@ -122,20 +140,26 @@ if($_SESSION['role']!=1){
 									<p class="hidden-lg hidden-md">Dashboard</p>
 								</a>
 							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
-									<p class="hidden-lg hidden-md">Notifications</p>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
-								</ul>
-							</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">sms</i>
+                                    <span class="notification" id="msgcount1">0</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu" id="msgbody">
+                                    <li class="disabled"><a href="#">No new Messages</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">notifications</i>
+                                    <span class="notification">0</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu" id="notifbody">
+                                    <li class="disabled"><a href="#"> No new Notifications</a></li>
+                                </ul>
+                            </li>
 							<li>
 								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
 	 							   <i class="material-icons">person</i>
@@ -177,7 +201,7 @@ if($_SESSION['role']!=1){
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">view list</i> Read messages
+										<i class="material-icons">view list</i><a href="messages.php"> Read messages</a>
 									</div>
 								</div>
 							</div>
@@ -185,32 +209,14 @@ if($_SESSION['role']!=1){
 						<div class="col-lg-3 col-md-6 col-sm-6">
 							<div class="card card-stats">
 								<div class="card-header" data-background-color="red">
-									<i class="material-icons">sms</i>
+									<i class="material-icons">account_balance_wallet</i>
 								</div>
 								<div class="card-content">
-									<p class="category">Text</p>
-									<h3 class="title" id="notificationcount">0</h3>
+									<p class="category">Balance</p>
+									<h3 class="title"><?php echo $balance;?></h3>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">view list</i> Read
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-lg-3 col-md-6 col-sm-6">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="blue">
-									<i class="fa fa-twitter"></i>
-								</div>
-								<div class="card-content">
-									<p class="category">Followers</p>
-									<h3 class="title">+245</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">update</i> Just Updated
 									</div>
 								</div>
 							</div>
@@ -273,7 +279,35 @@ if($_SESSION['role']!=1){
 	<script src="../../assets/js/material-dashboard.js"></script>
 
 	<script type="text/javascript">
+
+        function getcounts(){
+            $.ajax({
+                url     :   '../../functions/constructor.php',
+                data    :   {
+                    'getcount':1,
+                    'messages':1,
+                    'notifications':1
+                },
+                dataType:   'JSON',
+                type    :   'POST',
+                beforeSend: function () {
+
+                },
+                success :   function (data) {
+                    $('#msgcount,#mscount,#messagecount,#msgcount1').html(data.messages);
+                    $('#notificationcount').html(data.notifications);
+                    $('#msgbody').html(data.msg);
+                    if(data.notif.trim()==""){
+                        $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
+                    }else {
+                        $('#notifbody').html(data.notif);
+                        alert(data.notif);
+                    }
+                }
+            });
+        }
     	$(document).ready(function(){
+    	    getcounts();
 
         	$.ajax({
                 url: '../../functions/constructor.php',

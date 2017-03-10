@@ -99,12 +99,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p>Welcome Message</p>
                     </a>
                 </li>
-                <li class="disabled">
-                    <a href="notifications.html">
-                        <i class="material-icons text-gray">notifications</i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>

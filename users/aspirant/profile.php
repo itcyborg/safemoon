@@ -1,7 +1,47 @@
 <?php
 @session_start();
-if($_SESSION['role']!=2){
+if($_SESSION['role']!=1){
     header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
+}
+
+if(isset($_POST['updateprofile'])){
+    $photo=$_FILES['pic'];
+    $firstname=$_POST['firstname'];
+    $middlename=$_POST['middlename'];
+    $lastname=$_POST['lastname'];
+    $twitter=$_POST['twitter'];
+    $userid=$_SESSION['userid'];
+
+// where are we posting to?
+    $url = 'https://www.safemoon.com/functions/constructor.php';
+
+// what post fields?
+    $fields = array(
+        'updateprofile' => true,
+        'pic' => $photo,
+        'firstname'=>$firstname,
+        'middlename'=>$middlename,
+        'lastname'=>$lastname,
+        'twitter'=>$twitter,
+        'userid'=>$userid
+    );
+
+// build the urlencoded data
+    $postvars = http_build_query($fields);
+
+// open connection
+    $ch = curl_init();
+
+// set the url, number of POST vars, POST data
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
+
+// execute post
+    $result = curl_exec($ch);
+
+// close connection
+    curl_close($ch);
 }
 /**
  * Created by PhpStorm.
@@ -58,51 +98,21 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="dashboard.html">
+                    <a href="dashboard.php">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="user.html">
+                    <a href="profile.php">
                         <i class="material-icons">person</i>
                         <p>User Profile</p>
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
-                        <i class="material-icons">content_paste</i>
-                        <p>Table List</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="typography.html">
-                        <i class="material-icons">library_books</i>
-                        <p>Typography</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="material-icons">bubble_chart</i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.html">
-                        <i class="material-icons">location_on</i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.html">
-                        <i class="material-icons text-gray">notifications</i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-                <li class="active-pro">
-                    <a href="upgrade.html">
-                        <i class="material-icons">unarchive</i>
-                        <p>Upgrade to PRO</p>
+                    <a href="messages.php">
+                        <i class="material-icons">forum</i>
+                        <p>Messages</p>
                     </a>
                 </li>
             </ul>
@@ -131,16 +141,22 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="material-icons">notifications</i>
-                                <span class="notification">5</span>
+                                <i class="material-icons">sms</i>
+                                <span class="notification" id="msgcount1">0</span>
                                 <p class="hidden-lg hidden-md">Notifications</p>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Mike John responded to your email</a></li>
-                                <li><a href="#">You have 5 new tasks</a></li>
-                                <li><a href="#">You're now friend with Andrew</a></li>
-                                <li><a href="#">Another Notification</a></li>
-                                <li><a href="#">Another One</a></li>
+                            <ul class="dropdown-menu" id="msgbody">
+                                <li class="disabled"><a href="#">No new Messages</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">notifications</i>
+                                <span class="notification">0</span>
+                                <p class="hidden-lg hidden-md">Notifications</p>
+                            </a>
+                            <ul class="dropdown-menu" id="notifbody">
+                                <li class="disabled"><a href="#"> No new Notifications</a></li>
                             </ul>
                         </li>
                         <li>
@@ -161,7 +177,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <div class="card-header">Profile</div>
 
                         <div class="card-content">
-                            <form action="../../functions/constructor.php" method="post" enctype="multipart/form-data">
+                            <form action="profile.php" method="post" enctype="multipart/form-data">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div id="profilepic" class="col-lg-5 col-md-4 col-sm-12">
                                         <div style="width:200px; height: 200px;" id="pich">
@@ -175,7 +191,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                         <input type="text" placeholder="First Name" name="firstname" id="firstname" class="form-control">
                                         <input type="text" placeholder="Middle Name" name="middlename" id="middlename" class="form-control">
                                         <input type="text" placeholder="Last Name" name="lastname" id="lastname" class="form-control">
-                                        <input type="text" placeholder="Twitter username(without @)" name="twitter" id="twitter" class="form-control">
                                     </div>
                                 </div>
                                 <button name="updateprofile" class="btn btn-primary pull-right">Submit</button>
@@ -241,8 +256,43 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard javascript methods -->
 <script src="../../assets/js/material-dashboard.js"></script>
 
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="../../assets/js/demo.js"></script>
+
 <script type="text/javascript">
+
+    function getcounts(){
+        $.ajax({
+            url     :   '../../functions/constructor.php',
+            data    :   {
+                'getcount':1,
+                'messages':1,
+                'notifications':1
+            },
+            dataType:   'JSON',
+            type    :   'POST',
+            beforeSend: function () {
+
+            },
+            success :   function (data) {
+                $('#msgcount,#mscount,#messagecount,#msgcount1').html(data.messages);
+                $('#notificationcount').html(data.notifications);
+                $('#msgbody').html(data.msg);
+                if(data.notif.trim()==""){
+                    $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
+                }else {
+                    $('#notifbody').html(data.notif);
+                    alert(data.notif);
+                }
+            }
+        });
+    }
     $(document).ready(function () {
+        getcounts();
+
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
         $.ajax({
             url: '../../functions/constructor.php',
             data: 'getuserprofile',
@@ -256,7 +306,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 $('#firstname').val(data.first);
                 $('#middlename').val(data.middle);
                 $('#lastname').val(data.last);
-                $('#twitter').val(data.twitter);
             }
         });
 

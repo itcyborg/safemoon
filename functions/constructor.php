@@ -47,7 +47,8 @@ if(isset($_POST['updateprofile'])){
     $middlename=$_POST['middlename'];
     $lastname=$_POST['lastname'];
     $twitter=$_POST['twitter'];
-    $array=array('profile'=>$photo,'first'=>$firstname,'middle'=>$middlename,'last'=>$lastname,'twitter'=>$twitter);
+    $userid=$_POST['userid'];
+    $array=array('profile'=>$photo,'first'=>$firstname,'middle'=>$middlename,'last'=>$lastname,'twitter'=>$twitter,'userid'=>$userid);
     include 'function.php';
     updateProfile($array);
 }

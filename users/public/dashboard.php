@@ -70,15 +70,15 @@ if($_SESSION['role']!=3){
                         </a>
                     </li>
                     <li>
-                        <a href="upgrade.php">
-                            <i class="material-icons">unarchive</i>
-                            <p>Upgrade to Aspirant</p>
+                        <a href="messages.php">
+                            <i class="material-icons">forum</i>
+                            <p>Messages</p>
                         </a>
                     </li>
                     <li>
-                        <a href="notifications.html">
-                            <i class="material-icons text-gray">notifications</i>
-                            <p>Notifications</p>
+                        <a href="upgrade.php">
+                            <i class="material-icons">unarchive</i>
+                            <p>Upgrade to Aspirant</p>
                         </a>
                     </li>
                 </ul>
@@ -105,20 +105,26 @@ if($_SESSION['role']!=3){
 									<p class="hidden-lg hidden-md">Dashboard</p>
 								</a>
 							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
-									<p class="hidden-lg hidden-md">Notifications</p>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
-								</ul>
-							</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">sms</i>
+                                    <span class="notification" id="msgcount1">0</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu" id="msgbody">
+                                    <li class="disabled"><a href="#">No new Messages</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">notifications</i>
+                                    <span class="notification">0</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu" id="notifbody">
+                                    <li class="disabled"><a href="#"> No new Notifications</a></li>
+                                </ul>
+                            </li>
 							<li>
 								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
 	 							   <i class="material-icons">person</i>
@@ -160,40 +166,7 @@ if($_SESSION['role']!=3){
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">view list</i> Read messages
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="red">
-									<i class="material-icons">sms</i>
-								</div>
-								<div class="card-content">
-									<p class="category">Text Messages</p>
-									<h3 class="title" id="notificationcount">0</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">view list</i> Read Text Messages
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-lg-3 col-md-6 col-sm-6">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="blue">
-									<i class="fa fa-twitter"></i>
-								</div>
-								<div class="card-content">
-									<p class="category">Followers</p>
-									<h3 class="title">+245</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">update</i> Just Updated
+										<i class="material-icons">view list</i><a href="messages.php"> Read messages</a>
 									</div>
 								</div>
 							</div>
@@ -259,8 +232,35 @@ if($_SESSION['role']!=3){
 	<script src="../../assets/js/demo.js"></script>
 
 	<script type="text/javascript">
-    	$(document).ready(function(){
 
+        function getcounts(){
+            $.ajax({
+                url     :   '../../functions/constructor.php',
+                data    :   {
+                    'getcount':1,
+                    'messages':1,
+                    'notifications':1
+                },
+                dataType:   'JSON',
+                type    :   'POST',
+                beforeSend: function () {
+
+                },
+                success :   function (data) {
+                    $('#msgcount,#mscount,#messagecount,#msgcount1').html(data.messages);
+                    $('#notificationcount').html(data.notifications);
+                    $('#msgbody').html(data.msg);
+                    if(data.notif.trim()==""){
+                        $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
+                    }else {
+                        $('#notifbody').html(data.notif);
+                        alert(data.notif);
+                    }
+                }
+            });
+        }
+    	$(document).ready(function(){
+            getcounts();
 			// Javascript method's body can be found in assets/js/demos.js
 
         	demo.initDashboardPageCharts();

@@ -3,19 +3,25 @@
  * Created by PhpStorm.
  * User: itcyb
  * Date: 3/7/2017
- * Time: 8:03 AM
+ * Time: 10:19 PM
  */
 @session_start();
-if($_SESSION['role']!=1){
+if($_SESSION['role']!=3){
     header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
 }
+/**
+ * Created by PhpStorm.
+ * User: itcyb
+ * Date: 3/3/2017
+ * Time: 9:12 AM
+ */
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png"/>
-    <link rel="icon" type="image/png" href="....//assets/img/favicon.png"/>
+    <link rel="icon" type="image/png" href="..../assets/img/favicon.png"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
     <title>Safemoon</title>
@@ -50,7 +56,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 -->
 
         <div class="logo">
-            <a href="http://www.creative-tim.com" class="simple-text">
+            <a href="../../" class="simple-text">
                 Safemoon
             </a>
         </div>
@@ -69,28 +75,16 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p>User Profile</p>
                     </a>
                 </li>
-                <li>
-                    <a href="aspirants.php">
-                        <i class="material-icons">people</i>
-                        <p>Aspirants</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="parties.php">
-                        <i class="material-icons">group add</i>
-                        <p> &nbsp;&nbsp;Parties</p>
-                    </a>
-                </li>
-                <li>
+                <li class="active">
                     <a href="messages.php">
                         <i class="material-icons">forum</i>
                         <p>Messages</p>
                     </a>
                 </li>
-                <li class="active">
-                    <a href="welcome_msg.php">
-                        <i class="material-icons">sms</i>
-                        <p>Welcome Message</p>
+                <li>
+                    <a href="upgrade.php">
+                        <i class="material-icons">unarchive</i>
+                        <p>Upgrade to Aspirant</p>
                     </a>
                 </li>
             </ul>
@@ -152,25 +146,39 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             <div class="container-fluid">
                 <div class="row">
                     <div class="card">
-                        <div class="card-header">Welcome Message</div>
+                        <div class="card-header">Messages</div>
+                        <style>
+                            #message-content{
+                                min-height: 250px;
+                                max-height: 350px;
+                                overflow: auto;
 
+                            }
+                            #persons-content{
+                                min-height: 250px;
+                                height: 350px;
+                                overflow: auto;
+                            }
+                        </style>
                         <div class="card-content">
-                            <div class="form-info card-description">
-                                Enter the welcome message you wish to be sent to client's email. To append these client info:<br>
-                                Email: [email], Username: [username], Contact: [contact], Sitename:[sitename], Admin:[admin],
-                                Admin Email: [aemail] ,Logo: [logo]
-                                <hr>
-                                <br>
+                            <div class="col-lg-4 col-md-3 col-2">
+                                <input type="text" onkeyup="searchuser()" class="col-md-12 form-control input-sm" placeholder="Search user" id="searchuser">
+                                <div class="col-md-12 col-lg-12 col-sm-12" id="persons-content"></div>
                             </div>
-                            <form action="../../functions/constructor.php" method="post" enctype="multipart/form-data">
-                                <textarea id="welcome_msg" name="message">
-                                    <?php $file=fopen('../../uploads/welcome/welcome.txt','r');
-                                          echo fread($file,filesize('../../uploads/welcome/welcome.txt'));
-                                          fclose($file);
-                                    ?>
-                                </textarea>
-                                <button name="welcomemsg" class="btn btn-primary pull-right">Submit</button>
-                            </form>
+                            <div class="col-lg-8 col-md-9 col-10" id="chat_messages">
+                                <div style="background-color:white;" class="col-lg-12 col-md-12 col-sm-12" id="message-body">
+                                    <div class="col-lg-12 col-md-12 col-sm-12" id="message-content" style="height:100%;"></div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12" id="message-text">
+                                    <div class="form-group  is-empty c col-md-10 col-lg-10 col-sm-10">
+                                        <textarea type="text" class="form-control" placeholder="Reply" id="msg"></textarea>
+                                        <span class="material-input"></span>
+                                    </div>
+                                    <button onclick="sendMessage()" type="submit" class="btn btn-primary btn-round btn-just-icon col-md-1 col-lg-1 col-sm-1">
+                                        <i class="material-icons">send</i><div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,21 +234,100 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!--  Notifications Plugin    -->
 <script src="../../assets/js/bootstrap-notify.js"></script>
 
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
-
 <!-- Material Dashboard javascript methods -->
 <script src="../../assets/js/material-dashboard.js"></script>
-
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../../assets/js/demo.js"></script>
-
-<!-- CKeditor -->
 <script src="../../assets/ckeditor/ckeditor.js"></script>
 
 <script type="text/javascript">
+    var current="";
+    function getmessages(id){
+        current=id;
+        $.ajax({
+            url: '../../functions/constructor.php',
+            data: {
+                'getchatmessages':1,
+                'id':id
+            },
+            type:   'post',
+            beforeSend: function () {
+                $('#message-content').html("Loading");
+            },
+            success:function(data){
+                if(data!="") {
+                    $('#message-content').html(data);
+                    var elem = document.getElementById('message-content');
+                    elem.scrollTop = elem.scrollHeight;
+                }else{
+                    $('#message-content').html("now chatting with "+current);
+                }
+            }
+        });
 
+    }/*
+    function getuser(name){
 
+    }*/
+    function getusers(){
+        $.ajax({
+            url:        '../../functions/constructor.php',
+            data:       'getchatusers',
+            type:       'POST',
+            beforeSend: function(){
+            },
+            success:    function(data){
+                if(data=="No existing chats"){
+                    $('#persons-content').html(data);
+                }else{
+                    $('#persons-content').html("<ul class='list-group'>"+data+"</ul>");
+                }
+            }
+        });
+    }
+    function sendMessage(){
+        var msg=$('#msg').val().trim();
+        if(current!=""){
+            $.ajax({
+                url:    '../../functions/constructor.php',
+                data:   {
+                    'sendmessage':1,
+                    'msg':msg,
+                    'to':current
+                },
+                type:   'POST',
+                beforeSend: function () {
+
+                },
+                success :function (data) {
+                    alert(data);
+                    getmessages(current);
+                    $('#msg').html("");
+                }
+            });
+        }else{
+            alert("Please select the person you want to send the message to.");
+        }
+    }
+    function searchuser(){
+        var search =$('#searchuser').val().trim();
+        if(search!="") {
+            $.ajax({
+                url: '../../functions/constructor.php',
+                data: {
+                    'searchuser': 1,
+                    'data': search
+                },
+                type: 'POST',
+                beforeSend: function () {
+
+                },
+                success: function (data) {
+                    $('#persons-content').html(data);
+                }
+            });
+        }else{
+            getusers();
+        }
+    }
     function getcounts(){
         $.ajax({
             url     :   '../../functions/constructor.php',
@@ -255,7 +342,8 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 
             },
             success :   function (data) {
-                $('#msgcount,#mscount,#messagecount,#msgcount1').html(data.messages);
+                $('#msgcount,#mscount').html(data.messages);
+                $('#msgcount1').html(data.messages);
                 $('#notificationcount').html(data.notifications);
                 $('#msgbody').html(data.msg);
                 if(data.notif.trim()==""){
@@ -268,29 +356,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
         });
     }
     $(document).ready(function () {
+        getusers();
         getcounts();
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-        CKEDITOR.replace("welcome_msg");
-
-        $.ajax({
-            url: '../../functions/constructor.php',
-            data: 'getuserprofile',
-            type: 'POST',
-            dataType:'JSON',
-            beforeSend: function () {
-            },
-            success: function (data) {
-                console.log(data);
-                $('#pich').html('<img class="img-rounded img-responsive" src="'+data.photo+'">');
-                $('#firstname').val(data.first);
-                $('#middlename').val(data.middle);
-                $('#lastname').val(data.last);
-            }
-        });
-
     });
 </script>
 
 </html>
-

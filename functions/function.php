@@ -144,6 +144,8 @@ function login($array)
             if ($role == 1) {
                 header("location:../users/adm/dashboard.php");
             } elseif ($role == 2) {
+                $twitter=twitter();
+                $_SESSION['twitter']=$twitter;
                 header("location:../users/aspirant/dashboard.php");
             } elseif ($role == 3) {
                 header("location:../users/public/dashboard.php");
@@ -165,12 +167,15 @@ function updateProfile($array)
 
     $target_dir = "../uploads/profiles/";
     $filename = "F" . $_SESSION['userid'];
-    $userid = $_SESSION['userid'];
+    $userid = $array['userid'];
     $target_file = $target_dir . $filename . "." . $ext;
-    $sql = "INSERT INTO profile (FirstName, MiddleName, LastName, UserID, ProfilePic,Ext,Twitter) VALUES ('" . $array['first'] . "','" . $array['middle'] . "','" . $array['last'] . "','" . $userid . "','" . $filename . "','" . $ext . "','".$array['twitter']."') ON DUPLICATE KEY UPDATE FirstName='".$array['first']."', MiddleName='".$array['middle']."',LastName='".$array['last']."',Twitter='".$array['twitter']."'";
+    $sql = "INSERT INTO profile (FirstName, MiddleName, LastName, UserID, ProfilePic,Ext,Twitter) VALUES ('" . $array['first'] . "','" . $array['middle'] . "','" . $array['last'] . "','" . $userid . "','" . $filename . "','" . $ext . "','".$array['twitter']."')";
     include 'putRecords.php';
     $results = put($sql);
-    var_dump($results);
+    if(!$results['status']){
+        $sql="UPDATE profile SET FirstName='".$array['first']."', MiddleName='".$array['middle']."',LastName='".$array['last']."',Twitter='".$array['twitter']."' WHERE UserID='".$userid."'";
+        $res=put($sql);
+    }
     if (move_uploaded_file($file, $target_file)) {
         if (file_exists($target_file)) {
             $msg = "The file has been uploaded";
@@ -183,7 +188,6 @@ function updateProfile($array)
         $success = false;
         $msg = "the file has not been uploaded";
     }
-    echo $msg;
 }
 
 function viewProfile($userid)
@@ -386,4 +390,11 @@ function getcounts(){
         }
     }
     return array('messages'=>$msgcount,'notifications'=>$ntfcount,'msg'=>$msgoutput,'notif'=>$notifout);
+}
+
+function twitter(){
+    $userid=$_SESSION['userid'];
+    $sql="SELECT Twitter from profile WHERE UserID='".$userid."'";
+    $res=getRecord($sql);
+    return $res->fetch_assoc()['Twitter'];
 }

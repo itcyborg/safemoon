@@ -55,56 +55,27 @@ if($_SESSION['role']!=2){
 			</div>
 
 	    	<div class="sidebar-wrapper">
-	            <ul class="nav">
-	                <li class="active">
-	                    <a href="dashboard.html">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="user.html">
-	                        <i class="material-icons">person</i>
-	                        <p>User Profile</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="table.html">
-	                        <i class="material-icons">content_paste</i>
-	                        <p>Table List</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="typography.html">
-	                        <i class="material-icons">library_books</i>
-	                        <p>Typography</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="icons.html">
-	                        <i class="material-icons">bubble_chart</i>
-	                        <p>Icons</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="maps.html">
-	                        <i class="material-icons">location_on</i>
-	                        <p>Maps</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="notifications.html">
-	                        <i class="material-icons text-gray">notifications</i>
-	                        <p>Notifications</p>
-	                    </a>
-	                </li>
-					<li class="active-pro">
-	                    <a href="upgrade.html">
-	                        <i class="material-icons">unarchive</i>
-	                        <p>Upgrade to PRO</p>
-	                    </a>
-	                </li>
-	            </ul>
+
+                <ul class="nav">
+                    <li class="active">
+                        <a href="dashboard.php">
+                            <i class="material-icons">dashboard</i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile.php">
+                            <i class="material-icons">person</i>
+                            <p>User Profile</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="messages.php">
+                            <i class="material-icons">forum</i>
+                            <p>Messages</p>
+                        </a>
+                    </li>
+                </ul>
 	    	</div>
 	    </div>
 
@@ -128,20 +99,26 @@ if($_SESSION['role']!=2){
 									<p class="hidden-lg hidden-md">Dashboard</p>
 								</a>
 							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
-									<p class="hidden-lg hidden-md">Notifications</p>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
-								</ul>
-							</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">sms</i>
+                                    <span class="notification" id="msgcount1">0</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu" id="msgbody">
+                                    <li class="disabled"><a href="#">No new Messages</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">notifications</i>
+                                    <span class="notification">0</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu" id="notifbody">
+                                    <li class="disabled"><a href="#"> No new Notifications</a></li>
+                                </ul>
+                            </li>
 							<li>
 								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
 	 							   <i class="material-icons">person</i>
@@ -158,75 +135,27 @@ if($_SESSION['role']!=2){
 					<div class="row">
 						<div class="col-lg-3 col-md-6 col-sm-6">
 							<div class="card card-stats">
-								<div class="card-header" data-background-color="orange">
-									<i class="material-icons">people</i>
-								</div>
-								<div class="card-content">
-									<p class="category">Total Users</p>
-									<h3 class="title" id="totalusers"></h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">list</i> <a href="users.php">view</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6">
-							<div class="card card-stats">
 								<div class="card-header" data-background-color="green">
 									<i class="material-icons">chat bubble</i>
 								</div>
 								<div class="card-content">
-									<p class="category">Messages(chat)</p>
+									<p class="category">Messages</p>
 									<h3 class="title" id="messagecount">0</h3>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">view list</i> Read messages
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="red">
-									<i class="material-icons">sms</i>
-								</div>
-								<div class="card-content">
-									<p class="category">Text Messages</p>
-									<h3 class="title" id="notificationcount">0</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">view list</i> Read Text Messages
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="blue">
-									<i class="fa fa-twitter"></i>
-								</div>
-								<div class="card-content">
-									<p class="category">Followers</p>
-									<h3 class="title">+245</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">update</i> Just Updated
+										<i class="material-icons">view list</i><a href="messages.php"> Read messages</a>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
                     <div class="row">
-                        <div class="col-lg-5 col-md-6 col-sm-12">
+                        <div class="col-lg-8 col-md-8 col-sm-12">
                             <div class="card">
                                 <div class="card-header">Twitter</div>
                                 <div class="card-content" style="max-height: 500px;overflow: auto;">
-                                    <a class="twitter-timeline" href="https://twitter.com/TwitterDev">Tweets by TwitterDev</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    <a class="twitter-timeline" href="https://twitter.com/<?php echo $_SESSION['twitter']; ?>">Tweets by <?php echo $_SESSION['twitter'];?></a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                                 </div>
                             </div>
                         </div>
@@ -291,8 +220,36 @@ if($_SESSION['role']!=2){
 	<script src="../../assets/js/demo.js"></script>
 
 	<script type="text/javascript">
-    	$(document).ready(function(){
 
+        function getcounts(){
+            $.ajax({
+                url     :   '../../functions/constructor.php',
+                data    :   {
+                    'getcount':1,
+                    'messages':1,
+                    'notifications':1
+                },
+                dataType:   'JSON',
+                type    :   'POST',
+                beforeSend: function () {
+
+                },
+                success :   function (data) {
+                    $('#msgcount,#mscount,#messagecount').html(data.messages);
+                    $('#msgcount1').html(data.messages);
+                    $('#notificationcount').html(data.notifications);
+                    $('#msgbody').html(data.msg);
+                    if(data.notif.trim()==""){
+                        $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
+                    }else {
+                        $('#notifbody').html(data.notif);
+                        alert(data.notif);
+                    }
+                }
+            });
+        }
+    	$(document).ready(function(){
+            getcounts();
 			// Javascript method's body can be found in assets/js/demos.js
         	demo.initDashboardPageCharts();
 
