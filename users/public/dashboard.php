@@ -254,7 +254,6 @@ if($_SESSION['role']!=3){
                         $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
                     }else {
                         $('#notifbody').html(data.notif);
-                        alert(data.notif);
                     }
                 }
             });

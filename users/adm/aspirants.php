@@ -157,7 +157,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                     <div class="card">
                         <div class="card-header">View Aspirants</div>
                         <div class="card-content">
-                            <table class="table table-hover table-responsive table-full-width">
+                            <table id="asptbl" class="table table-hover table-responsive table-full-width">
                                 <thead class="text-primary">
                                 <tr>
                                     <th>UserID</th>
@@ -169,7 +169,32 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                     <th>Action</th>
                                 </tr>
                                 </thead>
-                                <tbody id="tbody"></tbody>
+                                <tbody id="tbody">
+                                    <?php
+                                    $url = 'https://www.safemoon.com/functions/constructor.php';
+
+                                    // what post fields?
+                                    $fields = array(
+                                        'getaspirants'=>true,
+                                        'category'=>'all'
+                                    );
+
+                                    // build the urlencoded data
+                                    $postvars = http_build_query($fields);
+
+                                    // open connection
+                                    $ch = curl_init();
+
+                                    // set the url, number of POST vars, POST data
+                                    curl_setopt($ch, CURLOPT_URL, $url);
+                                    curl_setopt($ch, CURLOPT_POST, count($fields));
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
+
+                                    // execute post
+                                    $result = curl_exec($ch);
+                                    echo $result;
+                                    ?>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -232,12 +257,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard javascript methods -->
 <script src="../../assets/js/material-dashboard.js"></script>
 
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="../../assets/js/demo.js"></script>
+<script src="../../assets/DataTables/datatables.js"></script>
 
 <script type="text/javascript">
-
-
     function getcounts(){
         $.ajax({
             url     :   '../../functions/constructor.php',
@@ -259,7 +281,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                     $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
                 }else {
                     $('#notifbody').html(data.notif);
-                    alert(data.notif);
                 }
             }
         });
@@ -287,29 +308,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             }
         });
     }
-    function getaspirantslist(){
-        $.ajax({
-            url: '../../functions/constructor.php',
-            data: {
-                'getaspirants':1,
-                'category':'all'
-            },
-            type: 'POST',
-            beforeSend: function () {
-            },
-            success: function (data) {
-                $('#tbody').html(data);
-            }
-        });
-    }
     $(document).ready(function () {
-
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-
-        getaspirantslist();
+        $('#asptbl').DataTable();
     });
 </script>
 
 </html>
-l

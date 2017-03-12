@@ -301,7 +301,6 @@ catch ( AfricasTalkingGatewayException $e )
                         $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
                     }else {
                         $('#notifbody').html(data.notif);
-                        alert(data.notif);
                     }
                 }
             });

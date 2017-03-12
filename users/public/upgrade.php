@@ -290,7 +290,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                     $('#notifbody').html("<li><a href='#'>No new notifications</a> </li>");
                 }else {
                     $('#notifbody').html(data.notif);
-                    alert(data.notif);
                 }
             }
         });
@@ -303,6 +302,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
+        $('#county,#constituency,#ward').hide();
 
         $.ajax({
             url: '../../functions/constructor.php',
@@ -340,14 +340,15 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                     }
                 });
             }else if(position=="president"){
-                $('#county').html("<option>Select County</option>").hide();
+                $('#county,#constituency,#ward').html("<option>Select County</option>").hide();
             }
         });
 
         $('#county').change(function(){
             var position=$('#position').val();
             var county=$('#county').val();
-            if(position=="mp"){
+            if(position=="mp" || position=="ward"){
+                $('#constituency').show();
                 $.ajax({
                     url:    '../../functions/constructor.php',
                     data:   {
@@ -367,21 +368,24 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
         });
         $('#constituency').change(function(){
            var consituency=$('#constituency').val();
-           $.ajax({
-               url:    '../../functions/constructor.php',
-               data:   {
-                   'getwards':1,
-                   'id': consituency
-               },
-               type:   'POST',
-               beforeSend:function(){
-                   $('#status').html("Fetching wards");
-               },
-               success:function(data){
-                   $('#status').html("done");
-                   $('#ward').html("<option>Select Ward</option>"+data);
-               }
-           });
+           if(position="ward") {
+               $('#ward').show();
+               $.ajax({
+                   url: '../../functions/constructor.php',
+                   data: {
+                       'getwards': 1,
+                       'id': consituency
+                   },
+                   type: 'POST',
+                   beforeSend: function () {
+                       $('#status').html("Fetching wards");
+                   },
+                   success: function (data) {
+                       $('#status').html("done");
+                       $('#ward').html("<option>Select Ward</option>" + data);
+                   }
+               });
+           }
         });
     });
 </script>

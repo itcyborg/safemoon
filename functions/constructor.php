@@ -63,8 +63,19 @@ if(isset($_POST['upgrade'])){
     $about=mysql_real_escape_string($_POST['aboutme']);
     $manifesto=mysql_real_escape_string($_POST['manifesto']);
     $party=$_POST['party'];
+    $county=trim($_POST['county']);
+    $constituency=trim($_POST['constituency']);
+    $ward=trim($_POST['ward']);
     include 'function.php';
-    $array=array('about'=>$about,'position'=>$position,'manifesto'=>$manifesto,'party'=>$party);
+    $array=array(
+        'about'=>$about,
+        'position'=>$position,
+        'manifesto'=>$manifesto,
+        'party'=>$party,
+        'county'=>$county,
+        'constituency'=>$constituency,
+        'ward'=>$ward
+    );
     var_dump(upgrade($array));
 }
 
@@ -177,13 +188,19 @@ if(isset($_POST['getchatusers'])){
     $res=getchatusers();
     $count=$res->num_rows;
     $output="";
+    $users=array();
     if($count<1){
         echo 'No existing chats';
     }else{
         while($row=$res->fetch_assoc()){
-            $output.="<li onclick='getmessages(\"".$row['UserID']."\")' class='list-group-item'><div class='media'>
-        <div class='media-body'>
-          <h4 class='media-heading'>".$row['Username']."<small> | <i>".$row['Email']."</i></small></h4></li>";
+            if(in_array($row['UserID'],$users)){
+
+            }else {
+                $output .= "<li onclick='getmessages(\"" . $row['UserID'] . "\")' class='list-group-item'><div class='media'>
+                <div class='media-body'>
+                <h4 class='media-heading'>" . $row['Username'] . "<small> | <i>" . $row['Email'] . "</i></small></h4></li>";
+                array_push($users,$row['UserID']);
+            }
         }
         echo $output;
     }

@@ -154,8 +154,10 @@ function login($array)
             }
             getTotalUsers();
         } else {
-            echo "failed";
+            header("location:../views/error.php?error=true&code=Error&message=Wrong credentials");
         }
+    }else{
+        header("location:../views/error.php?error=true&code=Error&message=Wrong credentials");
     }
 }
 
@@ -235,6 +237,10 @@ function getProfile()
     return $response;
 }
 
+/**
+ * @param $array
+ * @return array
+ */
 function upgrade($array)
 {
     $position = $array['position'];
@@ -245,6 +251,38 @@ function upgrade($array)
     $sql = "INSERT INTO aspirants(UserID,About,Party,Position,Manifesto) VALUES ('" . $userid . "','" . $about . "','" . $party . "','" . $position . "','" . $manifesto . "')";
     include "putRecords.php";
     $result = put($sql);
+
+    //get other relevant fields
+    $sql="";
+    switch ($position){
+        case "president":
+            $sql="INSERT INTO presidential(UserID) VALUES ('".$userid."')";
+            break;
+        case "governor":
+            $county=$array['county'];
+            $sql="INSERT INTO governor(UserID,County) VALUES ('".$userid."','".$county."') ";
+            break;
+        case "senator":
+            $county=$array['county'];
+            $sql="INSERT INTO  senator(UserId,County) VALUES ('".$userid."','".$county."')";
+            break;
+        case "wrep":
+            $county=$array['county'];
+            $sql="INSERT INTO  wrep(UserID,County) VALUES ('".$userid."','".$county."')";
+            break;
+        case "mp":
+            $county=$array['county'];
+            $constituency=$array['constituency'];
+            $sql="INSERT INTO  mps(UserID,County,Constituency) VALUES ('".$userid."','".$county."','".$constituency."')";
+            break;
+        case "mca":
+            $county=$array['county'];
+            $constituency=$array['constituency'];
+            $ward=$array['ward'];
+            $sql="INSERT INTO  mca(UserID,County,Constituency,Ward) VALUES ('".$userid."','".$county."','".$constituency."','".$ward."')";
+            break;
+    }
+    var_dump(put($sql));
     return $result;
 }
 
