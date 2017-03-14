@@ -66,6 +66,7 @@ if(isset($_POST['upgrade'])){
     $county=trim($_POST['county']);
     $constituency=trim($_POST['constituency']);
     $ward=trim($_POST['ward']);
+    $agent=trim($_POST['agent']);
     include 'function.php';
     $array=array(
         'about'=>$about,
@@ -74,7 +75,8 @@ if(isset($_POST['upgrade'])){
         'party'=>$party,
         'county'=>$county,
         'constituency'=>$constituency,
-        'ward'=>$ward
+        'ward'=>$ward,
+        'agent'=>$agent
     );
     var_dump(upgrade($array));
 }
@@ -269,4 +271,11 @@ if(isset($_POST['getcount'])){
         $res=getcounts();
         echo json_encode($res);
     }
+}
+
+if(isset($_POST['paymentNotification'])){
+    $phonenumber=$_POST['phonenumber'];
+    $value=$_POST['value'];
+    $account=$_POST['account'];
+    $array=array('phone'=>$phonenumber,'value'=>$value,'account'=>$account);
 }

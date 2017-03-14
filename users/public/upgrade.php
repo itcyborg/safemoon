@@ -181,6 +181,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                             <option>Select Ward</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <input type="text" class="form-control" name="agent" id="agent" placeholder="Name of Referring agent if any.">
+                                    </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-lg-6">
                                     <div class="card">

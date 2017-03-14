@@ -248,7 +248,8 @@ function upgrade($array)
     $about = $array['about'];
     $manifesto = $array['manifesto'];
     $userid = $_SESSION['userid'];
-    $sql = "INSERT INTO aspirants(UserID,About,Party,Position,Manifesto) VALUES ('" . $userid . "','" . $about . "','" . $party . "','" . $position . "','" . $manifesto . "')";
+    $agent=$array['agent'];
+    $sql = "INSERT INTO aspirants(UserID,About,Party,Position,Manifesto,Agent) VALUES ('" . $userid . "','" . $about . "','" . $party . "','" . $position . "','" . $manifesto . "','".$agent."')";
     include "putRecords.php";
     $result = put($sql);
 
@@ -435,4 +436,8 @@ function twitter(){
     $sql="SELECT Twitter from profile WHERE UserID='".$userid."'";
     $res=getRecord($sql);
     return $res->fetch_assoc()['Twitter'];
+}
+
+function paymentNotification($array){
+    $sql="INSERT INTO payments()";
 }
