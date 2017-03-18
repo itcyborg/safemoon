@@ -140,14 +140,23 @@ function login($array)
         if (passVerify($password, $hash)) {
             $_SESSION['userid'] = $rows['UserID'];
             $role = $rows['Role'];
-            $_SESSION['role'] = $role;
             if ($role == 1) {
+                $_SESSION['role'] = $role;
                 header("location:../users/adm/dashboard.php");
             } elseif ($role == 2) {
+                $sql="SELECT * FROM aspirants WHERE Status='1' && UserID='".$rows['UserID']."'";
+                $res=getRecord($sql);
+                if($res->num_rows>0){
+                    $_SESSION['role'] = $role;
+                    header("location:../users/aspirant/dashboard.php");
+                }else{
+                    $_SESSION['role']= 3;
+                    header("location:../users/public/dashboard.php");
+                }
                 $twitter=twitter();
                 $_SESSION['twitter']=$twitter;
-                header("location:../users/aspirant/dashboard.php");
             } elseif ($role == 3) {
+                $_SESSION['role'] = $role;
                 header("location:../users/public/dashboard.php");
             } else {
                 header("location:../views/error.php?error=true&code=A1&message=unexpected servererror.Contact admin.");
