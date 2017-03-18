@@ -277,5 +277,6 @@ if(isset($_POST['paymentNotification'])){
     $phonenumber=$_POST['phonenumber'];
     $value=$_POST['value'];
     $account=$_POST['account'];
+    $
     $array=array('phone'=>$phonenumber,'value'=>$value,'account'=>$account);
 }

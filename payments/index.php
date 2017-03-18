@@ -28,7 +28,10 @@ if ( $category == "MobileC2B" ) {
         'paymentNotification'=>true,
         'phonenumber'=>$phoneNumber,
         'value'=>$value,
-        'account'=>$account
+        'account'=>$account,
+        'id'=>$id,
+        'category'=>$category,
+        'provider'=>$provider
     );
 
 // build the urlencoded data

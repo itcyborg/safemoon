@@ -1,0 +1,17 @@
+<p>[logo]</p>
+
+<p>Hello there [username],</p>
+
+<p>I would like to take this time to thank you for joining us.</p>
+
+<p>Your email: [email]</p>
+
+<p>Your contact: [contact]</p>
+
+<p>&nbsp;</p>
+
+<p>Thank you,</p>
+
+<p>[admin]</p>
+
+<p>[aemail]</p>
