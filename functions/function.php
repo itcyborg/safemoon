@@ -439,5 +439,43 @@ function twitter(){
 }
 
 function paymentNotification($array){
-    $sql="INSERT INTO payments()";
+    $userid=$_SESSION['userid'];
+    $sql="INSERT INTO payments(Payer,TransactionID,UserID,Amount) VALUES ('".$array['phone']."','".$array['transactionid']."','".$userid."','".$array['amount']."')";
+    include "putRecords.php";
+    $result=put($sql);
+    if($result['status']){
+        verifypayment();
+    }
+}
+
+function confirmpayment($array){
+    $sql="INSERT INTO vertable(Payer,TransactionID,Amount) VALUES ('".$array['payer']."','".$array['transactionid']."','".$array['amount']."')";
+    include "putRecords.php";
+    $result=put($sql);
+    if($result['status']){
+        verifypayment();
+    }
+}
+
+function verifypayment(){
+    $file=fopen('../system/am','r');
+    $amount=fread($file,filesize('../system/am'));
+    fclose($file);
+    $sql="SELECT * FROM vertable";
+    $sql1="SELECT * FROM payments";
+    include "getRecords.php";
+    $result=getRecord($sql);
+    $result1=getRecord($sql1);
+    if($result->num_rows>0 && $result1->num_rows>0){
+        while($row=$result->fetch_assoc()){
+            while($row1=$result1->fetch_assoc()){
+                if($row['TransactionID']==$row1['TransactionID']){
+                    if($row['Amount']>=$amount){
+                        $userid=$row1['UserID'];
+                        change_acc_status($userid,1);
+                    }
+                }
+            }
+        }
+    }
 }
