@@ -78,7 +78,8 @@ if(isset($_POST['upgrade'])){
         'ward'=>$ward,
         'agent'=>$agent
     );
-    var_dump(upgrade($array));
+    upgrade($array);
+    header('location:../users/public/payment.php');
 }
 
 if(isset($_POST['getparty'])){
@@ -279,4 +280,21 @@ if(isset($_POST['paymentNotification'])){
     $account=$_POST['account'];
     $
     $array=array('phone'=>$phonenumber,'value'=>$value,'account'=>$account);
+}
+
+if(isset($_POST['makepayment'])){
+    $amount=$_POST['amount'];
+    $transactionid=$_POST['transactionid'];
+    $phone=$_POST['phone'];
+    include "function.php";
+    $result=paymentNotification(array('phone'=>$phone,'transactionid'=>$transactionid,'amount'=>$amount));
+    echo $result;
+}
+if(isset($_POST['confirmpayment'])){
+    $amount=$_POST['amount'];
+    $transactionid=$_POST['transactionid'];
+    $phone=$_POST['phone'];
+    include "function.php";
+    $result=confirmpayment(array('phone'=>$phone,'transactionid'=>$transactionid,'amount'=>$amount));
+    echo $result;
 }

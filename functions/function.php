@@ -253,6 +253,7 @@ function getProfile()
 function upgrade($array)
 {
     $position = $array['position'];
+    $amount=0;
     $party = $array['party'];
     $about = $array['about'];
     $manifesto = $array['manifesto'];
@@ -269,29 +270,35 @@ function upgrade($array)
             $sql="INSERT INTO presidential(UserID) VALUES ('".$userid."')";
             break;
         case "governor":
+            $amount=25000;
             $county=$array['county'];
             $sql="INSERT INTO governor(UserID,County) VALUES ('".$userid."','".$county."') ";
             break;
         case "senator":
+            $amount=20000;
             $county=$array['county'];
             $sql="INSERT INTO  senator(UserId,County) VALUES ('".$userid."','".$county."')";
             break;
         case "wrep":
+            $amount=15000;
             $county=$array['county'];
             $sql="INSERT INTO  wrep(UserID,County) VALUES ('".$userid."','".$county."')";
             break;
         case "mp":
+            $amount=15000;
             $county=$array['county'];
             $constituency=$array['constituency'];
             $sql="INSERT INTO  mps(UserID,County,Constituency) VALUES ('".$userid."','".$county."','".$constituency."')";
             break;
         case "mca":
+            $amount=10000;
             $county=$array['county'];
             $constituency=$array['constituency'];
             $ward=$array['ward'];
             $sql="INSERT INTO  mca(UserID,County,Constituency,Ward) VALUES ('".$userid."','".$county."','".$constituency."','".$ward."')";
             break;
     }
+    $_SESSION['amount']=$amount;
     var_dump(put($sql));
     return $result;
 }
@@ -455,6 +462,7 @@ function paymentNotification($array){
     if($result['status']){
         verifypayment();
     }
+    return 'Your payment will be verified as soon as possible';
 }
 
 function confirmpayment($array){
@@ -467,9 +475,6 @@ function confirmpayment($array){
 }
 
 function verifypayment(){
-    $file=fopen('../system/am','r');
-    $amount=fread($file,filesize('../system/am'));
-    fclose($file);
     $sql="SELECT * FROM vertable";
     $sql1="SELECT * FROM payments";
     include "getRecords.php";
@@ -479,8 +484,28 @@ function verifypayment(){
         while($row=$result->fetch_assoc()){
             while($row1=$result1->fetch_assoc()){
                 if($row['TransactionID']==$row1['TransactionID']){
+                    $userid=$row1['UserID'];
+                    $sql="SELECT Position from aspirants WHERE UserID='".$userid."'";
+                    $result=getRecord($sql);
+                    $position="";
+                    if($result->num_rows>0){
+                        $position=$result->fetch_assoc();
+                    }
+                    $amount=0;
+                    switch ($position){
+                        case 'mp':
+                            $amount=15000;
+                        case 'mca':
+                            $amount=10000;
+                        case 'wrep':
+                            $amount=15000;
+                        case 'senator':
+                            $amount=20000;
+                        case 'governor':
+                            $amount=25000;
+                        default:$amount=0;
+                    }
                     if($row['Amount']>=$amount){
-                        $userid=$row1['UserID'];
                         change_acc_status($userid,1);
                     }
                 }
