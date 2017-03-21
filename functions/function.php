@@ -473,8 +473,8 @@ function confirmpayment($array){
         verifypayment();
     }
 }
-
 function verifypayment(){
+    $res="";
     $sql="SELECT * FROM vertable";
     $sql1="SELECT * FROM payments";
     include "getRecords.php";
@@ -506,10 +506,11 @@ function verifypayment(){
                         default:$amount=0;
                     }
                     if($row['Amount']>=$amount){
-                        change_acc_status($userid,1);
+                        $res=change_acc_status($userid,1);
                     }
                 }
             }
         }
     }
+    return $res;
 }
