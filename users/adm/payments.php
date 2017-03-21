@@ -55,21 +55,44 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="../aspirant/dashboard.php">
+                    <a href="dashboard.php">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="active">
-                    <a href="../aspirant/profile.php">
+                <li>
+                    <a href="profile.php">
                         <i class="material-icons">person</i>
                         <p>User Profile</p>
                     </a>
                 </li>
                 <li>
-                    <a href="../aspirant/messages.php">
+                    <a href="aspirants.php">
+                        <i class="material-icons">people</i>
+                        <p>Aspirants</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="payments.php">
+                        <i class="material-icons"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="parties.php">
+                        <i class="material-icons">group add</i>
+                        <p> &nbsp;&nbsp;Parties</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="messages.php">
                         <i class="material-icons">forum</i>
                         <p>Messages</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="welcome_msg.php">
+                        <i class="material-icons">sms</i>
+                        <p>Welcome Message</p>
                     </a>
                 </li>
             </ul>
@@ -131,19 +154,23 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             <div class="container-fluid">
                 <div class="row">
                     <div class="card">
-                        <div class="card-header">Profile</div>
-
+                        <div class="card-header">Payments</div>
                         <div class="card-content">
-                            <form action="../../functions/constructor.php" id="payform" method="post">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div id="payment" class="col-lg-5 col-md-4 col-sm-12">
-                                        <input type="number" placeholder="Phone number used to pay" name="phone" id="phone" class="form-control">
-                                        <input style="text-transform: uppercase" type="text" placeholder="TRANSACTION ID" name="transactionid" id="transactionid" class="form-control">
-                                        <input type="number" placeholder="Amount" name="amount" id="amount" class="form-control">
-                                    </div>
-                                </div>
-                                <button name="pay" class="btn btn-primary pull-right">Submit</button>
-                            </form>
+                            <table id="paymentstbl" class="table table-responsive table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Payer</th>
+                                        <th>TransactionID</th>
+                                        <th>Position</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payments">
+                                    <?php
+
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -208,8 +235,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../assets/js/demo.js"></script>
 
-<script type="text/javascript">
+<script src="../../assets/DataTables/datatables.js"></script>
 
+<script type="text/javascript">
     function getcounts(){
         $.ajax({
             url     :   '../../functions/constructor.php',
@@ -235,29 +263,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
             }
         });
     }
-
-    $('#payform').submit(function(e){
-        e.preventDefault();
-        var amount=$('#amount').val();
-        var phone=$('#phone').val();
-        var transactionid=$('#transactionid').val();
-        $.ajax({
-            url: '../../functions/constructor.php',
-            data: {
-                'confirmpayment': 1,
-                'amount': amount,
-                'transactionid': transactionid,
-                'phone': phone
-            },
-            type: 'POST',
-            success: function (data) {
-                alert(data);
-            }
-        });
-    });
     $(document).ready(function () {
+        $('#paymentstbl').DataTable();
         getcounts();
-
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 

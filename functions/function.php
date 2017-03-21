@@ -465,14 +465,16 @@ function paymentNotification($array){
     return 'Your payment will be verified as soon as possible';
 }
 
-function confirmpayment($array){
-    $sql="INSERT INTO vertable(Payer,TransactionID,Amount) VALUES ('".$array['payer']."','".$array['transactionid']."','".$array['amount']."')";
-    include "putRecords.php";
-    $result=put($sql);
-    if($result['status']){
-        verifypayment();
+function viewTransactions(){
+    $result="Not authorised";
+    if(isset($_SESSION['role'])==1){
+        $sql="SELECT payments.*,aspirants.* FROM payments INNER JOIN aspirants ON aspirants.UserID=payments.UserID";
+        include "getRecords.php";
+        $result=getRecord($sql);
     }
+    return $result;
 }
+
 function verifypayment(){
     $res="";
     $sql="SELECT * FROM vertable";
@@ -510,6 +512,7 @@ function verifypayment(){
                     }
                 }
             }
+
         }
     }
     return $res;

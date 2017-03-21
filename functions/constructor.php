@@ -274,14 +274,6 @@ if(isset($_POST['getcount'])){
     }
 }
 
-if(isset($_POST['paymentNotification'])){
-    $phonenumber=$_POST['phonenumber'];
-    $value=$_POST['value'];
-    $account=$_POST['account'];
-    $
-    $array=array('phone'=>$phonenumber,'value'=>$value,'account'=>$account);
-}
-
 if(isset($_POST['makepayment'])){
     $amount=$_POST['amount'];
     $transactionid=$_POST['transactionid'];
@@ -290,11 +282,22 @@ if(isset($_POST['makepayment'])){
     $result=paymentNotification(array('phone'=>$phone,'transactionid'=>$transactionid,'amount'=>$amount));
     echo $result;
 }
-if(isset($_POST['confirmpayment'])){
-    $amount=$_POST['amount'];
-    $transactionid=$_POST['transactionid'];
-    $phone=$_POST['phone'];
-    include "function.php";
-    $result=confirmpayment(array('phone'=>$phone,'transactionid'=>$transactionid,'amount'=>$amount));
-    echo $result;
+
+if(isset($_GET['getpayments'])){
+    $output = "";
+    if(isset($_SESSION['role'])==1) {
+        include "function.php";
+        $result = viewTransactions();
+        while ($row = $result->fetch_assoc()) {
+            $output .= "
+        <tr>
+        <td>" . $row['Payer'] . "</td>
+        <td>" . $row['TransactionID'] . "</td>
+        <td>" . $row['Position'] . "</td>
+        <td>" . $row['TimeStamp'] . "</td>
+</tr>           
+        ";
+        }
+    }
+    echo $output;
 }
