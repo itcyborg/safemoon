@@ -298,6 +298,8 @@ if(isset($_GET['getpayments'])){
 </tr>           
         ";
         }
+    } else {
+        $output = "NOT AUTHORISED";
     }
     echo $output;
 }

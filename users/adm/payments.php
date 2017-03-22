@@ -1,5 +1,19 @@
 <?php
 @session_start();
+$sql = "SELECT payments.*,aspirants.* FROM payments INNER JOIN aspirants ON aspirants.UserID=payments.UserID";
+include "../../system/conn.php";
+$result = $conn->query($sql);
+$output = "";
+while ($row = $result->fetch_assoc()) {
+    $output .= "
+        <tr>
+        <td>" . $row['Payer'] . "</td>
+        <td>" . strtoupper($row['TransactionID']) . "</td>
+        <td>" . $row['Position'] . "</td>
+        <td>" . $row['TimeStamp'] . "</td>
+</tr>           
+        ";
+}
 /**
  * Created by PhpStorm.
  * User: itcyb
@@ -12,7 +26,7 @@
 <head>
     <meta charset="utf-8"/>
     <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png"/>
-    <link rel="icon" type="image/png" href="....//assets/img/favicon.png"/>
+    <link rel="icon" type="image/png" href="../../assets/img/favicon.png"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
     <title>Safemoon</title>
@@ -167,7 +181,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                 </thead>
                                 <tbody id="payments">
                                     <?php
-
+                                    echo $output;
                                     ?>
                                 </tbody>
                             </table>
