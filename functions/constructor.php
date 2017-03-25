@@ -37,7 +37,8 @@ if(isset($_POST['addparty'])){
     $name=$_POST['partyname'];
     $abbr=$_POST['abbr'];
     $patron=$_POST['patron'];
-    $array=array('name'=>$name,'patron'=>$patron,'abbr'=>$abbr);
+    $color = $_POST['color'];
+    $array = array('name' => $name, 'patron' => $patron, 'abbr' => $abbr, 'color' => $color);
     add_party($array);
 }
 
@@ -60,6 +61,7 @@ if(isset($_POST['getuserprofile'])){
 
 if(isset($_POST['upgrade'])){
     $position=$_POST['position'];
+    $location = $_POST['location'];
     $about=mysql_real_escape_string($_POST['aboutme']);
     $manifesto=mysql_real_escape_string($_POST['manifesto']);
     $party=$_POST['party'];
@@ -76,7 +78,8 @@ if(isset($_POST['upgrade'])){
         'county'=>$county,
         'constituency'=>$constituency,
         'ward'=>$ward,
-        'agent'=>$agent
+        'agent' => $agent,
+        'location' => $location
     );
     upgrade($array);
     header('location:../users/public/payment.php');
@@ -302,4 +305,12 @@ if(isset($_GET['getpayments'])){
         $output = "NOT AUTHORISED";
     }
     echo $output;
+}
+
+if (isset($_POST['viewaspirants'])) {
+    include "function.php";
+    $result = getAspirants("1");
+    while ($row = $result->fetch_assoc) {
+        echo $row['Position'];
+    }
 }

@@ -75,6 +75,12 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                         <p>Aspirants</p>
                     </a>
                 </li>
+                <li>
+                    <a href="payments.php">
+                        <i class="material-icons">account_balance_wallet</i>
+                        <p>Payments</p>
+                    </a>
+                </li>
                 <li class="active">
                     <a href="parties.php">
                         <i class="material-icons">group add</i>
@@ -142,6 +148,14 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                 <i class="material-icons">person</i>
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../../functions/logout.php">
+                                        <i class="material-icons">directions_run</i>
+                                        <p>Logout</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -159,6 +173,9 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                 <input type="text" placeholder="Party Name" name="partyname" id="partyname" class="form-control">
                                 <input type="text" placeholder="Abbreviation" name="abbr" id="abbr" class="form-control">
                                 <input type="text" placeholder="Patron Name (First Middle Last)" name="patron" id="patron" class="form-control">
+                                <label for="color">Party Color</label>
+                                <input type="color" name="color" placeholder="Party color" id="color"
+                                       class="form-control">
                                 <button name="addparty" class="btn btn-primary">Submit</button>
                             </form>
                         </div>

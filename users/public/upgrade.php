@@ -130,6 +130,14 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                 <i class="material-icons">person</i>
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../../functions/logout.php">
+                                        <i class="material-icons">directions_run</i>
+                                        <p>Logout</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -180,6 +188,10 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                         <select class="form-control" name="ward" id="ward">
                                             <option>Select Ward</option>
                                         </select>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <input type="text" class="form-control" name="location" id="location"
+                                               placeholder="Location: County or Constiturency or ward.">
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-sm-12">
                                         <input type="text" class="form-control" name="agent" id="agent" placeholder="Name of Referring agent if any.">

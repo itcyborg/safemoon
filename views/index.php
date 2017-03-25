@@ -20,6 +20,7 @@
                 $contact=$row['Contact'];
                 $party=$row['Party'];
                 $twitter=$row['Twitter'];
+                $color = $row['Color'];
                 $fullname=strtoupper($first." ".$middle." ".$last);
                 $img="../uploads/profiles/".$profilepic;
             }
@@ -41,7 +42,7 @@
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
 	</head>
-	<body id="top">
+    <body id="top" style="background-color: <?php echo $color; ?>; color:black;">
 
 		<!-- Header -->
 			<header id="header">

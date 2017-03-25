@@ -88,7 +88,8 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 </li>
                 <li class="active">
                     <a href="payments.php">
-                        <i class="material-icons"></i>
+                        <i class="material-icons">account_balance_wallet</i>
+                        <p>Payments</p>
                     </a>
                 </li>
                 <li>
@@ -158,6 +159,14 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                 <i class="material-icons">person</i>
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../../functions/logout.php">
+                                        <i class="material-icons">directions_run</i>
+                                        <p>Logout</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

@@ -78,32 +78,38 @@ catch ( AfricasTalkingGatewayException $e )
 				</a>
 			</div>
 
-	    	<div class="sidebar-wrapper">
-	            <ul class="nav">
-	                <li class="active">
-	                    <a href="dashboard.php">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="profile.php">
-	                        <i class="material-icons">person</i>
-	                        <p>User Profile</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="aspirants.php">
-	                        <i class="material-icons">people</i>
-	                        <p>Aspirants</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="parties.php">
-	                        <i class="material-icons">group add</i>
-	                        <p> &nbsp;&nbsp;Parties</p>
-	                    </a>
-	                </li>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li class="active">
+                        <a href="dashboard.php">
+                            <i class="material-icons">dashboard</i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile.php">
+                            <i class="material-icons">person</i>
+                            <p>User Profile</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="aspirants.php">
+                            <i class="material-icons">people</i>
+                            <p>Aspirants</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="payments.php">
+                            <i class="material-icons">account_balance_wallet</i>
+                            <p>Payments</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="parties.php">
+                            <i class="material-icons">group add</i>
+                            <p> &nbsp;&nbsp;Parties</p>
+                        </a>
+                    </li>
                     <li>
                         <a href="messages.php">
                             <i class="material-icons">forum</i>
@@ -116,8 +122,8 @@ catch ( AfricasTalkingGatewayException $e )
                             <p>Welcome Message</p>
                         </a>
                     </li>
-	            </ul>
-	    	</div>
+                </ul>
+            </div>
 	    </div>
 
 	    <div class="main-panel">
@@ -165,6 +171,14 @@ catch ( AfricasTalkingGatewayException $e )
 	 							   <i class="material-icons">person</i>
 	 							   <p class="hidden-lg hidden-md">Profile</p>
 		 						</a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="../../functions/logout.php">
+                                            <i class="material-icons">directions_run</i>
+                                            <p>Logout</p>
+                                        </a>
+                                    </li>
+                                </ul>
 							</li>
 						</ul>
 					</div>

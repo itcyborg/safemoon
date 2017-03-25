@@ -106,7 +106,7 @@ function createAccount($array)
 function add_party($array)
 {
     $partyid = "P" . generateID();
-    $sql = "INSERT INTO parties(PartyID,PartyName,PartyABR,Patron) VALUES ('" . $partyid . "','" . $array['name'] . "','" . $array['abbr'] . "','" . $array['patron'] . "')";
+    $sql = "INSERT INTO parties(PartyID,PartyName,PartyABR,Patron,Color) VALUES ('" . $partyid . "','" . $array['name'] . "','" . $array['abbr'] . "','" . $array['patron'] . "','" . $array['color'] . "')";
     include 'putRecords.php';
     $result = put($sql);
     var_dump($result);
@@ -257,9 +257,10 @@ function upgrade($array)
     $party = $array['party'];
     $about = $array['about'];
     $manifesto = $array['manifesto'];
+    $location = $array['location'];
     $userid = $_SESSION['userid'];
     $agent=$array['agent'];
-    $sql = "INSERT INTO aspirants(UserID,About,Party,Position,Manifesto,Agent) VALUES ('" . $userid . "','" . $about . "','" . $party . "','" . $position . "','" . $manifesto . "','".$agent."')";
+    $sql = "INSERT INTO aspirants(UserID,About,Party,Position,Manifesto,Agent,Location) VALUES ('" . $userid . "','" . $about . "','" . $party . "','" . $position . "','" . $manifesto . "','" . $agent . "','" . $location . "')";
     include "putRecords.php";
     $result = put($sql);
 
@@ -305,7 +306,7 @@ function upgrade($array)
 
 function viewAspirant($id)
 {
-    $sql = 'SELECT users.*,profile.*,aspirants.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID JOIN users ON users.UserID=aspirants.UserID WHERE aspirants.UserID="' . $id . '"';
+    $sql = 'SELECT users.*,profile.*,aspirants.*,parties.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID JOIN users ON users.UserID=aspirants.UserID JOIN parties ON aspirants.Party=parties.PartyName WHERE aspirants.UserID="' . $id . '"';
     include "getRecords.php";
     $result = getRecord($sql);
     return $result;
