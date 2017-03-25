@@ -1,5 +1,8 @@
 <?php
 @session_start();
+if ($_SESSION['role'] != 1) {
+    header("location:../../views/error.php?error=true&code=A2&message=Authorisation Error. Access restricted.");
+}
 $sql = "SELECT payments.*,aspirants.* FROM payments INNER JOIN aspirants ON aspirants.UserID=payments.UserID";
 include "../../system/conn.php";
 $result = $conn->query($sql);
