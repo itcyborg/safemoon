@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="https://www.safemoon.com" traceLevel="DETAILS" uploadOnCheckin="dada68bc-73f2-4433-b67a-b564a68bbd3c">
+  <component name="PublishConfigData" autoUpload="Always" serverName="https://www.safemoon.com" traceLevel="DETAILS" uploadOnCheckin="dada68bc-73f2-4433-b67a-b564a68bbd3c">
     <serverData>
       <paths name="https://www.safemoon.com">
         <serverdata>
@@ -11,5 +11,6 @@
       </paths>
     </serverData>
     <option name="myUploadOnCheckinName" value="https://www.safemoon.com" />
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
