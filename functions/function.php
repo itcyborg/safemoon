@@ -395,7 +395,7 @@ function change_acc_status($id, $action)
 
 function getchatusers(){
     $sender=$_SESSION['userid'];
-    $sql="SELECT DISTINCT users.*,messages.* FROM messages INNER JOIN users ON users.UserID=messages.Sender WHERE messages.Recepient='".$sender."'";
+    $sql = "SELECT DISTINCT users.*,messages.* FROM messages INNER JOIN users ON users.UserID=messages.Sender WHERE messages.Recepient='" . $sender . "' && messages.sender!='" . $sender . "'";
     include "getRecords.php";
     $result=getRecord($sql);
     return $result;

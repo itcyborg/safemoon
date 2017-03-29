@@ -1,3 +1,50 @@
+<?php
+@session_start();
+if (isset($_GET['category'])) {
+    $category = $_GET['category'];
+    $sql = "";
+    switch ($category) {
+        case 'president':
+            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            break;
+        case 'governor':
+            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            break;
+        case 'senator':
+            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            break;
+        case 'wrep':
+            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            break;
+        case 'mp':
+            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            break;
+        case 'mca':
+            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            break;
+        case 'all' :
+            $sql = "SELECT profile.*,aspirants.* FROM aspirants JOIN profile ON profile.UserID=aspirants.UserID";
+            break;
+        default :
+            die("Wrong Category");
+            break;
+    }
+    include "system/conn.php";
+    $result = $conn->query($sql);
+    $out = "";
+    if ($result->num_rows < 1) {
+        $our = $category;
+    } else {
+        while ($row = $result->fetch_assoc()) {
+            $out .= "
+            <div class=\"col-md-3 to-animate\" style=\"background-color:greenyellow;padding:0;margin: 10px;\">
+                <img style='height: 250px;padding: 0;' class=\"col-md-12\" src=\"uploads/profiles/" . $row['ProfilePic'] . "." . $row['Ext'] . "\" class=\"img-responsive img-thumbnail\"><br>
+                <span style='height:70px; background-color:;' class=\"col-md-12\"></span>
+            </div>";
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -17,20 +64,6 @@
           content="Get to know, converse and talk to your political aspirant. Know who is vying for which position at your place"/>
     <meta name="keywords" content="Safemoon,politics,kenya politics,political aspirants,aspirants"/>
     <meta name="author" content="Itcyborg Designs, http://itcyborg.webuda.com"/>
-
-    <!--
-      //////////////////////////////////////////////////////
-
-      FREE HTML5 TEMPLATE
-      DESIGNED & DEVELOPED by FREEHTML5.CO
-
-      Website: 		http://freehtml5.co/
-      Email: 			info@freehtml5.co
-      Twitter: 		http://twitter.com/fh5co
-      Facebook: 		https://www.facebook.com/fh5co
-
-      //////////////////////////////////////////////////////
-       -->
 
     <!-- Facebook and Twitter integration -->
     <meta property="og:title" content=""/>
@@ -84,6 +117,30 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Aspirants &nbsp;
+                            <span class="icon-caret-down"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="aspirants.php?category=presidential">Presidential</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=governor">Gubernatorial</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=senators">Senators</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=mps">Member of Parliament</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=wrep">Women Rep</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=mca">Member of County Assembly</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=search">Search</a></li>
+                            <li class="nav-divider"></li>
+                            <li><a href="aspirants.php?category=all">All</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">|</a></li>
                     <li><a href="login.php">Login</a></li>
                     <li><a href="signup.php">Sign up</a></li>
                 </ul>
@@ -91,78 +148,15 @@
         </nav>
     </div>
 </header>
-
-<section id="fh5co-services" data-section="services">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 to-animate">
-                <h3>Know your Future Leaders</h3>
-                <p>Get to know who is vying for a position at your ward, constituency, county and even
-                    presidency.</p>
-            </div>
-            <div class="col-md-6 to-animate-2">
-                <div class="call-to-action text-right">
-                    <a href="aspirants.php" class="sign-up">More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="getting-started getting-started-1">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 to-animate">
-                <h3>Getting Started</h3>
-                <p>Sign up for a free account and talk to your future leaders, either at county, constituency or
-                    ward level.</p>
-            </div>
-            <div class="col-md-6 to-animate-2">
-                <div class="call-to-action text-right">
-                    <a href="signup.php" class="sign-up">Sign Up For Free</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--section id="fh5co-pricing" data-section="pricing">
-
-</section>
-
-<section id="fh5co-services" data-section="services">
-
-</section>
-
-<section id="fh5co-team" data-section="team">
-
-</section>
-
-<section id="fh5co-faq" data-section="faq">
-
-</section>
-
 <hr>
 
-<section id="fh5co-trusted" data-section="trusted">
-
-</section>
-
-<div class="getting-started getting-started-2">
+<section id="fh5co-services" data-section="services">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 to-animate">
-                <h3>Getting Started</h3>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </p>
-            </div>
-            <div class="col-md-6 to-animate-2">
-                <div class="call-to-action text-right">
-                    <a href="#" class="sign-up">Sign Up For Free</a>
-                </div>
-            </div>
+            <?php echo $out; ?>
         </div>
     </div>
-</div-->
+</section>
 
 <div id="fh5co-footer" role="contentinfo">
     <div class="container">

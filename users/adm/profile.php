@@ -339,6 +339,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 $('#firstname').val(data.first);
                 $('#middlename').val(data.middle);
                 $('#lastname').val(data.last);
+                $('#twitter').val(data.twitter);
             }
         });
 
