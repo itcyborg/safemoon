@@ -70,6 +70,12 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                     </a>
                 </li>
                 <li>
+                    <a target="_blank" href="https://webmail.safemoon.com/">
+                        <i class="material-icons">email</i>
+                        <p>Email&nbsp; <span class="fa fa-external-link"></span></p>
+                    </a>
+                </li>
+                <li>
                     <a href="profile.php">
                         <i class="material-icons">person</i>
                         <p>User Profile</p>

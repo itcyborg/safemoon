@@ -39,7 +39,7 @@ catch ( AfricasTalkingGatewayException $e )
 <head>
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png" />
-	<link rel="icon" type="image/png" href="....//assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="../../assets/img/favicon.png"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
 	<title>Safemoon</title>
@@ -84,6 +84,12 @@ catch ( AfricasTalkingGatewayException $e )
                         <a href="dashboard.php">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://webmail.safemoon.com/">
+                            <i class="material-icons">email</i>
+                            <p>Email&nbsp; <span class="fa fa-external-link"></span></p>
                         </a>
                     </li>
                     <li>

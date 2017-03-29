@@ -1,5 +1,8 @@
 <?php
 @session_start();
+
+include "system/conn.php";
+$out = "";
 if (isset($_GET['category'])) {
     $category = $_GET['category'];
     $sql = "";
@@ -29,7 +32,6 @@ if (isset($_GET['category'])) {
             die("Wrong Category");
             break;
     }
-    include "system/conn.php";
     $result = $conn->query($sql);
     $out = "";
     if ($result->num_rows < 1) {
@@ -37,14 +39,64 @@ if (isset($_GET['category'])) {
     } else {
         while ($row = $result->fetch_assoc()) {
             $out .= "
-            <div class=\"col-md-3 to-animate\" style=\"background-color:greenyellow;padding:0;margin: 10px;\">
+            <div class=\"col-md-3 to-animate listing\">
                 <img style='height: 250px;padding: 0;' class=\"col-md-12\" src=\"uploads/profiles/" . $row['ProfilePic'] . "." . $row['Ext'] . "\" class=\"img-responsive img-thumbnail\"><br>
-                <span style='height:70px; background-color:;' class=\"col-md-12\"></span>
+                <span style='height:120px;' class=\"col-md-12\">
+                    <h3 class='text-uppercase'>" . $row['FirstName'] . " " . $row['MiddleName'] . " " . $row['LastName'] . "</h3>
+                    <p>" . $row['Party'] . " <a href='aspirants.php?action=view&id=" . $row['UserID'] . "'>Know more...</a></p>
+                </span>
             </div>";
         }
     }
 }
+
+if (isset($_GET['action']) && isset($_GET['id'])) {
+    if ($_GET['action'] == 'view') {
+        $id = $_GET['id'];
+        $sql = "SELECT aspirants.*, profile.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID WHERE aspirants.UserID='" . $id . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $out .= "
+            <div class=\"col-md-12 to-animate\">
+                <div class='col-md-3'>
+                    <img style='height: 250px;padding: 0;' class=\"col-md-12\" src=\"uploads/profiles/" . $row['ProfilePic'] . "." . $row['Ext'] . "\" class=\"img-responsive img-thumbnail\">
+                    <div class='col-md-12'>
+                    <hr>
+                        <div class=\"col-md-12 to-animate\">
+                            <h3 class=\"section-title\">Connect with Us</h3>
+                                <a href=\"https://www.twitter.com/" . $row['Twitter'] . "\" target=\"_blank\" class=\"twitter\"><i
+                                                class=\"icon-twitter\"></i> @" . $row['Twitter'] . "</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-md-9'>
+                    <span class=\"col-md-12\">
+                        <h3 class='text-uppercase'>" . $row['FirstName'] . " " . $row['MiddleName'] . " " . $row['LastName'] . "</h3>
+                        <p>" . $row['Party'] . "</p>
+                        <p>" . $row['Position'] . "</p>
+                        <p>" . $row['Location'] . "</p>
+                        <hr>
+                        <div class='col-md-12'>
+                            <h2>About Me</h2>
+                            <div>" . $row['About'] . "</div>
+                            <hr>
+                        </div>
+                        <div class='col-md-12'>
+                            <h2>Manifesto</h2>
+                            <div>" . $row['Manifesto'] . "</div>
+                        </div>
+                    </span>
+                </div>
+            </div>";
+        } else {
+            $out = "Not Found";
+        }
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -106,6 +158,13 @@ if (isset($_GET['category'])) {
 
 </head>
 <body>
+<style>
+    .listing {
+        background-color: greenyellow;
+        padding: 0;
+        margin: 10px;
+    }
+</style>
 <header role="banner" id="fh5co-header">
     <div class="fluid-container">
         <nav class="navbar navbar-default">
