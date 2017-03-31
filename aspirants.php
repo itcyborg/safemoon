@@ -1,6 +1,6 @@
 <?php
 @session_start();
-
+$color = "";
 include "system/conn.php";
 $out = "";
 if (isset($_GET['category'])) {
@@ -8,25 +8,25 @@ if (isset($_GET['category'])) {
     $sql = "";
     switch ($category) {
         case 'president':
-            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            $sql = "SELECT aspirants.*,profile.*,parties.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE Position='" . $category . "'";
             break;
         case 'governor':
-            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            $sql = "SELECT aspirants.*,profile.*,parties.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE Position='" . $category . "'";
             break;
         case 'senator':
-            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            $sql = "SELECT aspirants.*,profile.*,parties.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE Position='" . $category . "'";
             break;
         case 'wrep':
-            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            $sql = "SELECT aspirants.*,profile.*,parties.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE Position='" . $category . "'";
             break;
         case 'mp':
-            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            $sql = "SELECT aspirants.*,profile.*,parties.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE Position='" . $category . "'";
             break;
         case 'mca':
-            $sql = "SELECT aspirants.*,profile.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID WHERE Position='" . $category . "'";
+            $sql = "SELECT aspirants.*,profile.*,parties.* FROM aspirants JOIN profile ON aspirants.Userid=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE Position='" . $category . "'";
             break;
         case 'all' :
-            $sql = "SELECT profile.*,aspirants.* FROM aspirants JOIN profile ON profile.UserID=aspirants.UserID";
+            $sql = "SELECT profile.*,aspirants.*, parties.* FROM aspirants JOIN parties ON parties.PartyName=aspirants.Party JOIN profile ON profile.UserID=aspirants.UserID";
             break;
         default :
             die("Wrong Category");
@@ -35,7 +35,8 @@ if (isset($_GET['category'])) {
     $result = $conn->query($sql);
     $out = "";
     if ($result->num_rows < 1) {
-        $our = $category;
+        $out = $category;
+        $out = $conn->error;
     } else {
         while ($row = $result->fetch_assoc()) {
             $out .= "
@@ -53,10 +54,11 @@ if (isset($_GET['category'])) {
 if (isset($_GET['action']) && isset($_GET['id'])) {
     if ($_GET['action'] == 'view') {
         $id = $_GET['id'];
-        $sql = "SELECT aspirants.*, profile.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID WHERE aspirants.UserID='" . $id . "'";
+        $sql = "SELECT aspirants.*, profile.*,parties.* FROM aspirants JOIN profile ON aspirants.UserID=profile.UserID JOIN parties ON parties.PartyName=aspirants.Party WHERE aspirants.UserID='" . $id . "'";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            $color = $row['Color'];
             $out .= "
             <div class=\"col-md-12 to-animate\">
                 <div class='col-md-3'>
@@ -91,7 +93,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 </div>
             </div>";
         } else {
-            $out = "Not Found";
+            $out = $conn->error;
         }
     }
 }
@@ -172,7 +174,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                 <!-- Mobile Toggle Menu Button -->
                 <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar"
                    aria-expanded="false" aria-controls="navbar"><i></i></a>
-                <a class="navbar-brand" href="login.html"><span>Safe</span>moon</a>
+                <a class="navbar-brand" href="index.html"><span>Safe</span>moon</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -182,13 +184,13 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
                             <span class="icon-caret-down"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="aspirants.php?category=presidential">Presidential</a></li>
+                            <li><a href="aspirants.php?category=president">Presidential</a></li>
                             <li class="nav-divider"></li>
                             <li><a href="aspirants.php?category=governor">Gubernatorial</a></li>
                             <li class="nav-divider"></li>
                             <li><a href="aspirants.php?category=senators">Senators</a></li>
                             <li class="nav-divider"></li>
-                            <li><a href="aspirants.php?category=mps">Member of Parliament</a></li>
+                            <li><a href="aspirants.php?category=mp">Member of Parliament</a></li>
                             <li class="nav-divider"></li>
                             <li><a href="aspirants.php?category=wrep">Women Rep</a></li>
                             <li class="nav-divider"></li>
@@ -209,7 +211,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
 </header>
 <hr>
 
-<section id="fh5co-services" data-section="services">
+<section style="background-color: <?php echo $color; ?>;" id="fh5co-services" data-section="services">
     <div class="container">
         <div class="row">
             <?php echo $out; ?>

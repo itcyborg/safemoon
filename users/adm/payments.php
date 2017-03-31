@@ -8,12 +8,20 @@ include "../../system/conn.php";
 $result = $conn->query($sql);
 $output = "";
 while ($row = $result->fetch_assoc()) {
+    $id = $row['UserID'];
+    $action = "Verify Payment";
+    if ($row['Status'] == 1) {
+        $action = "Verified";
+    }
     $output .= "
         <tr>
-        <td>" . $row['Payer'] . "</td>
+        <td>0" . $row['Payer'] . "</td>
         <td>" . strtoupper($row['TransactionID']) . "</td>
         <td>" . $row['Position'] . "</td>
         <td>" . $row['TimeStamp'] . "</td>
+        <td>
+            <button class='btn btn-primary' onclick='verify(\"" . $id . "\")'>" . $action . "</button>
+        </td>
 </tr>           
         ";
 }
@@ -195,6 +203,7 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                                         <th>TransactionID</th>
                                         <th>Position</th>
                                         <th>Time</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="payments">
@@ -292,6 +301,27 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
                 }else {
                     $('#notifbody').html(data.notif);
                 }
+            }
+        });
+    }
+
+    function verify(id) {
+        $.ajax({
+            url: '../../functions/constructor.php',
+            data: {
+                'modifyaccount': 1,
+                'account': 'activate',
+                'id': id
+            },
+            type: 'POST',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                if (data == "Success") {
+                } else {
+                    alert(data);
+                }
+                getaspirantslist();
             }
         });
     }
