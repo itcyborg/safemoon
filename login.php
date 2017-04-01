@@ -18,6 +18,10 @@
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
+    <meta name="description"
+          content="Welcome to safemoon, a place to know, interact and challenge you leaders or aspiring leaders and more."/>
+    <meta name="keywords" content="Safemoon,politics,kenya politics,political aspirants,aspirants"/>
+    <meta name="author" content="Itcyborg Designs, http://itcyborg.webuda.com"/>
 
     <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>

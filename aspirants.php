@@ -115,7 +115,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     <title>Safemoon</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-          content="Get to know, converse and talk to your political aspirant. Know who is vying for which position at your place"/>
+          content="Welcome to safemoon, a place to know, interact and challenge you leaders or aspiring leaders and more."/>
     <meta name="keywords" content="Safemoon,politics,kenya politics,political aspirants,aspirants"/>
     <meta name="author" content="Itcyborg Designs, http://itcyborg.webuda.com"/>
 
